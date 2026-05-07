@@ -123,44 +123,94 @@ export default function CreateListingPage() {
   </p>
 </div>
 
-          <textarea
-            placeholder="Description"
-            className="w-full border rounded-2xl px-5 py-4 min-h-[150px]"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <div>
+  <label className="font-bold block mb-2">
+    Description
+  </label>
 
-          <input
-            type="text"
-            placeholder="Desired trade"
-            className="w-full border rounded-2xl px-5 py-4"
-            value={desiredTrade}
-            onChange={(e) => setDesiredTrade(e.target.value)}
-          />
+  <textarea
+    placeholder="Describe condition, accessories, usage, etc."
+    className="w-full border rounded-2xl px-5 py-4 min-h-[150px]"
+    value={description}
+    onChange={(e) => setDescription(e.target.value)}
+  />
 
-          <input
-            type="number"
-            placeholder="Estimated value"
-            className="w-full border rounded-2xl px-5 py-4"
-            value={estimatedValue}
-            onChange={(e) => setEstimatedValue(e.target.value)}
-          />
+  <p className="text-sm text-slate-500 mt-2">
+    Include condition, included items, and important details.
+  </p>
+</div>
 
-          <input
-            type="text"
-            placeholder="City"
-            className="w-full border rounded-2xl px-5 py-4"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
+         <div>
+  <label className="font-bold block mb-2">
+    Desired Trade
+  </label>
 
-          <input
-            type="text"
-            placeholder="Country"
-            className="w-full border rounded-2xl px-5 py-4"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          />
+  <input
+    type="text"
+    placeholder="Example: Laptop, motorcycle or cash"
+    className="w-full border rounded-2xl px-5 py-4"
+    value={desiredTrade}
+    onChange={(e) => setDesiredTrade(e.target.value)}
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Explain what type of item or exchange you are looking for.
+  </p>
+</div>
+
+          <div>
+  <label className="font-bold block mb-2">
+    Estimated Value
+  </label>
+
+  <input
+    type="number"
+    placeholder="Example: 1200"
+    className="w-full border rounded-2xl px-5 py-4"
+    value={estimatedValue}
+    onChange={(e) => setEstimatedValue(e.target.value)}
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Approximate market value of your item in USD.
+  </p>
+</div>
+
+          <<div>
+  <label className="font-bold block mb-2">
+    City
+  </label>
+
+  <input
+    type="text"
+    placeholder="Example: Santiago"
+    className="w-full border rounded-2xl px-5 py-4"
+    value={city}
+    onChange={(e) => setCity(e.target.value)}
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Enter the city where the item is located.
+  </p>
+</div>
+
+          <div>
+  <label className="font-bold block mb-2">
+    Country
+  </label>
+
+  <input
+    type="text"
+    placeholder="Example: Dominican Republic"
+    className="w-full border rounded-2xl px-5 py-4"
+    value={country}
+    onChange={(e) => setCountry(e.target.value)}
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Country where the exchange can take place.
+  </p>
+</div>
 
           <button
             onClick={handleCreateListing}
