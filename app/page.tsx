@@ -1,7 +1,6 @@
 'use client'
-export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+//import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 interface Listing {
@@ -18,10 +17,21 @@ interface Listing {
 export default function HomePage() {
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
-  const searchParams = useSearchParams()
-  const search =
-  searchParams.get('search') || ''
- useEffect(() => {
+  const [search, setSearch] = useState('')
+useEffect(() => {
+
+  const params = new URLSearchParams(
+    window.location.search
+  )
+
+  const searchParam =
+    params.get('search') || ''
+
+  setSearch(searchParam)
+
+}, [])
+
+useEffect(() => {
   fetchListings()
 }, [search])
 
