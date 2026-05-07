@@ -228,14 +228,6 @@ async function updateListingStatus(
               Manage your listings and offers.
             </p>
           </div>
-
-          <button
-            onClick={signOut}
-            className="bg-black text-white px-6 py-4 rounded-2xl font-bold"
-          >
-            Logout
-          </button>
-
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">

@@ -50,7 +50,7 @@ export default function Navbar() {
 
       {/* TOP ROW */}
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
 
         {/* LOGO */}
 
@@ -71,7 +71,7 @@ export default function Navbar() {
 
         <form
           onSubmit={handleSearch}
-          className="flex-1 flex items-center gap-2"
+          className="w-full flex flex-col md:flex-row md:flex-1 items-stretch md:items-center gap-2"
         >
 
           <input
@@ -81,12 +81,12 @@ export default function Navbar() {
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="flex-1 border rounded-xl px-4 py-3 text-black"
+            className="w-full md:flex-1 border rounded-xl px-4 py-3 text-black"
           />
 
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl font-bold"
+            className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl font-bold"
           >
             Search
           </button>
