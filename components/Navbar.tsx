@@ -206,7 +206,9 @@ async function checkUser() {
       </div>
 
     </div>
+    </div>
 
+  </div>
   </nav>
 )
 }
