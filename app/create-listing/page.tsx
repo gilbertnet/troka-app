@@ -176,7 +176,7 @@ export default function CreateListingPage() {
   </p>
 </div>
 
-          <<div>
+          <div>
   <label className="font-bold block mb-2">
     City
   </label>
