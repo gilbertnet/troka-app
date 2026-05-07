@@ -7,6 +7,8 @@ import { supabase } from '@/lib/supabase'
 
 export default function Navbar() {
 
+  //const [loggedIn, setLoggedIn] =
+  //useState(false)
   const [loggedIn, setLoggedIn] =
   useState(false)
   const [firstName, setFirstName] =
@@ -21,7 +23,7 @@ export default function Navbar() {
     checkUser()
   }, [])
 
-  async function checkUser() {
+async function checkUser() {
 
   const {
     data: { user },
@@ -169,9 +171,14 @@ export default function Navbar() {
 
 ) : (
 
-      </div>
+   <Link
+    href="/login"
+    className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+  >
+    Login
+  </Link>
 
-      {/* BOTTOM ROW */}
+)}
 
       <div className="flex items-center gap-5 mt-4 text-sm font-semibold text-slate-600">
 
