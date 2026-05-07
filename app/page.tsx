@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 interface Listing {
@@ -17,25 +18,40 @@ interface Listing {
 export default function HomePage() {
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchListings()
-  }, [])
+  const searchParams = useSearchParams()
+  const search =
+  searchParams.get('search') || ''
+ useEffect(() => {
+  fetchListings()
+}, [search])
 
   async function fetchListings() {
-    const { data, error } = await supabase
-      .from('listings')
-      .select('*')
-      .order('created_at', { ascending: false })
 
-    if (error) {
-      console.log(error)
-      return
-    }
+  let query = supabase
+    .from('listings')
+    .select('*')
+    .order('created_at', {
+      ascending: false,
+    })
 
-    setListings(data || [])
-    setLoading(false)
+  if (search) {
+    query = query.ilike(
+      'title',
+      `%${search}%`
+    )
   }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.log(error)
+    return
+  }
+
+  setListings(data || [])
+
+  setLoading(false)
+}
 
   return (
     <main className="min-h-screen bg-slate-100 py-10 px-6">
