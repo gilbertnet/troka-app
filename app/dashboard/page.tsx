@@ -108,6 +108,51 @@ async function updateOfferStatus(
     return
   }
 
+  if (status === 'accepted') {
+
+    await supabase
+      .from('offers')
+      .update({ status: 'rejected' })
+      .eq('listing_id', listingId)
+      .neq('id', offerId)
+  }
+
+  setReceivedOffers((prevOffers) =>
+    prevOffers.map((offer: any) => {
+
+      if (
+        status === 'accepted' &&
+        offer.id !== offerId &&
+        offer.listing_id === listingId
+      ) {
+        return {
+          ...offer,
+          status: 'rejected',
+        }
+      }
+
+      if (offer.id === offerId) {
+        return {
+          ...offer,
+          status,
+        }
+      }
+
+      return offer
+    })
+  )
+} {
+
+  const { error } = await supabase
+    .from('offers')
+    .update({ status })
+    .eq('id', offerId)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
   // If accepted, reject all others
 
   if (status === 'accepted') {
