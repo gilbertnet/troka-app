@@ -8,6 +8,7 @@ interface Listing {
   id: string
   title: string
   image_url: string
+  status: string
 }
 
 interface Offer {
@@ -145,7 +146,56 @@ export default function DashboardPage() {
       })
     )
   }
+async function deleteListing(
+  listingId: string
+) {
 
+  const confirmed = confirm(
+    'Delete this listing?'
+  )
+
+  if (!confirmed) return
+
+  const { error } = await supabase
+    .from('listings')
+    .delete()
+    .eq('id', listingId)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  setMyListings((prev) =>
+    prev.filter(
+      (listing) => listing.id !== listingId
+    )
+  )
+}
+
+async function updateListingStatus(
+  listingId: string,
+  status: string
+) {
+
+  const { error } = await supabase
+    .from('listings')
+    .update({ status })
+    .eq('id', listingId)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  setMyListings((prev) =>
+    prev.map((listing) =>
+      listing.id === listingId
+        ? { ...listing, status }
+        : listing
+    )
+  )
+}
   async function signOut() {
     await supabase.auth.signOut()
 
@@ -219,11 +269,81 @@ export default function DashboardPage() {
                       className="w-20 h-20 rounded-xl object-cover"
                     />
 
-                    <div>
-                      <p className="font-black">
-                        {listing.title}
-                      </p>
-                    </div>
+                   <div className="flex-1">
+
+  <p className="font-black mb-2">
+    {listing.title}
+  </p>
+
+  <div className="flex items-center gap-2 mb-3">
+
+    <span
+      className={`
+        px-3 py-1 rounded-full text-xs font-bold
+        ${
+          listing.status === 'traded'
+            ? 'bg-green-100 text-green-700'
+            : listing.status === 'reserved'
+            ? 'bg-yellow-100 text-yellow-700'
+            : 'bg-slate-100 text-slate-700'
+        }
+      `}
+    >
+      {listing.status}
+    </span>
+
+  </div>
+
+  <div className="flex items-center gap-2 flex-wrap">
+
+    <button
+      onClick={() =>
+        updateListingStatus(
+          listing.id,
+          'available'
+        )
+      }
+      className="bg-slate-200 hover:bg-slate-300 px-3 py-2 rounded-xl text-xs font-bold"
+    >
+      Available
+    </button>
+
+    <button
+      onClick={() =>
+        updateListingStatus(
+          listing.id,
+          'reserved'
+        )
+      }
+      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-xl text-xs font-bold"
+    >
+      Reserve
+    </button>
+
+    <button
+      onClick={() =>
+        updateListingStatus(
+          listing.id,
+          'traded'
+        )
+      }
+      className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-xs font-bold"
+    >
+      Traded
+    </button>
+
+    <button
+      onClick={() =>
+        deleteListing(listing.id)
+      }
+      className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold"
+    >
+      Delete
+    </button>
+
+  </div>
+
+</div>
 
                   </div>
 
