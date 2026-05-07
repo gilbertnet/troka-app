@@ -21,6 +21,10 @@ export default function ListingDetailsPage() {
 
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
+  const [message, setMessage] = useState('')
+  const [offeredItem, setOfferedItem] = useState('')
+  const [cashAmount, setCashAmount] = useState('')
+  const [sendingOffer, setSendingOffer] = useState(false)
 
   useEffect(() => {
     if (params.id) {
@@ -39,7 +43,40 @@ export default function ListingDetailsPage() {
       console.log(error)
       return
     }
+async function handleMakeOffer() {
+  setSendingOffer(true)
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    alert('You must login first')
+    setSendingOffer(false)
+    return
+  }
+
+  const { error } = await supabase.from('offers').insert({
+    listing_id: listing?.id,
+    sender_id: user.id,
+    message,
+    offered_item: offeredItem,
+    cash_amount: Number(cashAmount),
+  })
+
+  setSendingOffer(false)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  alert('Offer sent successfully')
+
+  setMessage('')
+  setOfferedItem('')
+  setCashAmount('')
+}
     setListing(data)
     setLoading(false)
   }
@@ -128,12 +165,58 @@ export default function ListingDetailsPage() {
 
           </div>
 
-          <button
-            className="w-full bg-green-500 hover:bg-green-600 transition text-white py-5 rounded-2xl font-black text-xl"
-          >
-            Make Offer
-          </button>
+          <div className="space-y-5">
 
+  <div>
+    <label className="font-bold block mb-2">
+      Offered Item
+    </label>
+
+    <input
+      type="text"
+      placeholder="Example: MacBook Pro"
+      className="w-full border rounded-2xl px-5 py-4"
+      value={offeredItem}
+      onChange={(e) => setOfferedItem(e.target.value)}
+    />
+  </div>
+
+  <div>
+    <label className="font-bold block mb-2">
+      Additional Cash
+    </label>
+
+    <input
+      type="number"
+      placeholder="Optional"
+      className="w-full border rounded-2xl px-5 py-4"
+      value={cashAmount}
+      onChange={(e) => setCashAmount(e.target.value)}
+    />
+  </div>
+
+  <div>
+    <label className="font-bold block mb-2">
+      Message
+    </label>
+
+    <textarea
+      placeholder="Write your proposal..."
+      className="w-full border rounded-2xl px-5 py-4 min-h-[120px]"
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+    />
+  </div>
+
+  <button
+    onClick={handleMakeOffer}
+    disabled={sendingOffer}
+    className="w-full bg-green-500 hover:bg-green-600 transition text-white py-5 rounded-2xl font-black text-xl"
+  >
+    {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
+  </button>
+
+</div>
         </div>
 
       </div>
