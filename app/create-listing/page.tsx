@@ -32,6 +32,7 @@ export default function CreateListingPage() {
   const [country, setCountry] = useState('Dominican Republic')
   const [countryCode, setCountryCode] = useState('DO')
   const [stateCode, setStateCode] = useState('')
+  const [image, setImage] = useState<File | null>(null)
   async function handleCreateListing() {
     const {
       data: { user },
@@ -41,8 +42,39 @@ export default function CreateListingPage() {
       alert('You must login first')
       return
     }
+let imageUrl = ''
 
-    const { error } = await supabase.from('listings').insert({
+if (image) {
+  const fileName = `${Date.now()}-${image.name}`
+
+  const { error: uploadError } = await supabase.storage
+    .from('listings')
+    .upload(fileName, image)
+
+  if (uploadError) {
+    alert(uploadError.message)
+    return
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from('listings')
+    .getPublicUrl(fileName)
+
+  imageUrl = publicUrl
+}
+  const { error } = await supabase.from('listings').insert({
+  user_id: user.id,
+  title,
+  description,
+  category,
+  desired_trade: desiredTrade,
+  estimated_value: Number(estimatedValue),
+  city,
+  country,
+  image_url: imageUrl,
+})
       user_id: user.id,
       title,
       description,
@@ -268,6 +300,26 @@ export default function CreateListingPage() {
     Select the city where the item is located.
   </p>
 </div>
+<div>
+  <label className="font-bold block mb-2">
+    Listing Image
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files?.[0]) {
+        setImage(e.target.files[0])
+      }
+    }}
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Upload a clear photo of your item.
+  </p>
+ </div>
           <button
             onClick={handleCreateListing}
             className="w-full bg-green-500 text-white py-5 rounded-2xl font-black text-lg"
