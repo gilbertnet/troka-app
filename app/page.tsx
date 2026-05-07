@@ -1,42 +1,136 @@
-export default function Home() {
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+
+interface Listing {
+  id: string
+  title: string
+  description: string
+  category: string
+  city: string
+  country: string
+  estimated_value: number
+  image_url: string
+}
+
+export default function HomePage() {
+  const [listings, setListings] = useState<Listing[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchListings()
+  }, [])
+
+  async function fetchListings() {
+    const { data, error } = await supabase
+      .from('listings')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.log(error)
+      return
+    }
+
+    setListings(data || [])
+    setLoading(false)
+  }
+
   return (
-    <main className="min-h-screen bg-slate-50">
-      <section className="max-w-7xl mx-auto px-6 py-24">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <main className="min-h-screen bg-slate-100 py-10 px-6">
+
+      <div className="max-w-7xl mx-auto">
+
+        <div className="flex items-center justify-between mb-10">
 
           <div>
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold mb-6">
-              Smart Exchange Marketplace
-            </div>
-
-            <h1 className="text-7xl font-black leading-tight mb-8">
-              Exchange what you have for what you really want.
+            <h1 className="text-5xl font-black">
+              TROKA
             </h1>
 
-            <p className="text-2xl text-slate-600 mb-10 leading-relaxed">
-              Troka helps people trade products safely across the Dominican Republic.
+            <p className="text-slate-500 mt-2">
+              Trade anything with anyone.
             </p>
-
-            <div className="flex flex-wrap gap-5">
-              <button className="bg-green-500 text-white px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 transition">
-                Start Trading
-              </button>
-
-              <button className="bg-white border px-10 py-5 rounded-2xl font-black text-xl">
-                Explore Listings
-              </button>
-            </div>
           </div>
 
-          <div className="bg-white rounded-[40px] p-6 shadow-2xl border">
-            <img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop"
-              className="rounded-[30px] h-[600px] w-full object-cover"
-            />
-          </div>
+          <a
+            href="/create-listing"
+            className="bg-green-500 hover:bg-green-600 transition text-white px-6 py-4 rounded-2xl font-bold"
+          >
+            Create Listing
+          </a>
 
         </div>
-      </section>
+
+        {loading ? (
+          <p>Loading listings...</p>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {listings.map((listing) => (
+
+              <div
+                key={listing.id}
+                className="bg-white rounded-[30px] overflow-hidden shadow-lg border"
+              >
+
+                <img
+                  src={
+                    listing.image_url ||
+                    'https://placehold.co/600x400?text=No+Image'
+                  }
+                  alt={listing.title}
+                  className="w-full h-[250px] object-cover"
+                />
+
+                <div className="p-6">
+
+                  <div className="flex items-center justify-between mb-3">
+
+                    <span className="bg-slate-100 px-4 py-2 rounded-full text-sm font-semibold">
+                      {listing.category}
+                    </span>
+
+                    <span className="font-black text-green-600">
+                      ${listing.estimated_value}
+                    </span>
+
+                  </div>
+
+                  <h2 className="text-2xl font-black mb-2">
+                    {listing.title}
+                  </h2>
+
+                  <p className="text-slate-600 line-clamp-3 mb-5">
+                    {listing.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-sm text-slate-500">
+                      {listing.city}, {listing.country}
+                    </span>
+
+                    <button
+                      className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+                    >
+                      View
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+        )}
+
+      </div>
+
     </main>
   )
 }
