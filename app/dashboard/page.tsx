@@ -190,8 +190,6 @@ async function updateOfferStatus(
       return offer
     })
   )
-} {
-
   const { error } = await supabase
     .from('offers')
     .update({ status })
