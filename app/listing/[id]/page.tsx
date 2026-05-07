@@ -287,13 +287,36 @@ if (!message.trim()) {
     />
   </div>
 
-  <button
-    onClick={handleMakeOffer}
-    disabled={sendingOffer}
-    className="w-full bg-green-500 hover:bg-green-600 transition text-white py-5 rounded-2xl font-black text-xl"
-  >
-    {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
-  </button>
+  <<button
+  onClick={handleMakeOffer}
+  disabled={
+    sendingOffer ||
+    (
+      message.trim() === '' ||
+      (
+        offeredItem.trim() === '' &&
+        (!cashAmount || Number(cashAmount) <= 0)
+      )
+    )
+  }
+  className={`
+    w-full py-5 rounded-2xl font-black text-xl transition
+    ${
+      sendingOffer ||
+      (
+        message.trim() === '' ||
+        (
+          offeredItem.trim() === '' &&
+          (!cashAmount || Number(cashAmount) <= 0)
+        )
+      )
+        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+        : 'bg-green-500 hover:bg-green-600 text-white'
+    }
+  `}
+>
+  {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
+</button>
 
 </div>
         </div>
