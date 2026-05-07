@@ -266,32 +266,6 @@ export default function Navbar() {
   </button>
 
 </div>
-
-          <Link
-            href="/"
-            className="hover:text-green-600 transition"
-          >
-            Home
-          </Link>
-
-          <Link
-            href="/create-listing"
-            className="hover:text-green-600 transition"
-          >
-            Create Listing
-          </Link>
-
-          <Link
-            href="/dashboard"
-            className="hover:text-green-600 transition"
-          >
-            Dashboard
-          </Link>
-
-        </div>
-
-      </div>
-
     </nav>
   )
 }
