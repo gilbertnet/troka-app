@@ -9,6 +9,8 @@ export default function Navbar() {
 
   const [loggedIn, setLoggedIn] = useState(false)
   const [search, setSearch] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] =
+  useState(false)
   const router = useRouter()
   useEffect(() => {
     checkUser()
@@ -99,32 +101,98 @@ export default function Navbar() {
 
         </div>
 
-        <div>
+        <div className="flex items-center gap-3">
 
-          {loggedIn ? (
+  {/* MOBILE MENU BUTTON */}
 
-            <button
-              onClick={handleLogout}
-              className="bg-black text-white px-5 py-3 rounded-xl font-bold"
-            >
-              Logout
-            </button>
+  <button
+    onClick={() =>
+      setMobileMenuOpen(!mobileMenuOpen)
+    }
+    className="md:hidden bg-slate-100 px-4 py-3 rounded-xl font-black"
+  >
+    ☰
+  </button>
 
-          ) : (
+  {loggedIn ? (
 
-            <Link
-              href="/login"
-              className="bg-green-500 hover:bg-green-600 transition text-white px-5 py-3 rounded-xl font-bold"
-            >
-              Login
-            </Link>
+    <button
+      onClick={handleLogout}
+      className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+    >
+      Logout
+    </button>
 
-          )}
+  ) : (
 
-        </div>
+    <Link
+      href="/login"
+      className="bg-green-500 hover:bg-green-600 transition text-white px-5 py-3 rounded-xl font-bold"
+    >
+      Login
+    </Link>
+
+  )}
+
+</div>
 
       </div>
+{/* MOBILE MENU */}
 
+{mobileMenuOpen && (
+
+  <div className="md:hidden border-t bg-white px-6 py-6 space-y-5">
+
+    <Link
+      href="/"
+      className="block font-bold text-lg"
+      onClick={() =>
+        setMobileMenuOpen(false)
+      }
+    >
+      Home
+    </Link>
+
+    <Link
+      href="/create-listing"
+      className="block font-bold text-lg"
+      onClick={() =>
+        setMobileMenuOpen(false)
+      }
+    >
+      Create Listing
+    </Link>
+
+    <Link
+      href="/dashboard"
+      className="block font-bold text-lg"
+      onClick={() =>
+        setMobileMenuOpen(false)
+      }
+    >
+      Dashboard
+    </Link>
+
+    <form
+      onSubmit={handleSearch}
+      className="pt-4"
+    >
+
+      <input
+        type="text"
+        placeholder="Search listings..."
+        value={search}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
+        className="w-full border rounded-xl px-4 py-3"
+      />
+
+    </form>
+
+  </div>
+
+)}
     </nav>
   )
 }
