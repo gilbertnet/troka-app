@@ -140,7 +140,7 @@ if (!message.trim()) {
 
   const { error } = await supabase.from('offers').insert({
     listing_id: listing?.id,
-    sender_id: user.id,
+    sender_id: user!.id,
     message,
     offered_item: offeredItem,
     cash_amount: Number(cashAmount),
