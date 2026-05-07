@@ -94,8 +94,56 @@ export default function DashboardPage() {
   }
 async function updateOfferStatus(
   offerId: string,
-  status: string
+  status: string,
+  listingId: string
 ) {
+
+  const { error } = await supabase
+    .from('offers')
+    .update({ status })
+    .eq('id', offerId)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  // If accepted, reject all others
+
+  if (status === 'accepted') {
+
+    await supabase
+      .from('offers')
+      .update({ status: 'rejected' })
+      .eq('listing_id', listingId)
+      .neq('id', offerId)
+  }
+
+  setReceivedOffers((prevOffers) =>
+    prevOffers.map((offer) => {
+
+      if (
+        status === 'accepted' &&
+        offer.id !== offerId &&
+        offer.listings?.id === listingId
+      ) {
+        return {
+          ...offer,
+          status: 'rejected',
+        }
+      }
+
+      if (offer.id === offerId) {
+        return {
+          ...offer,
+          status,
+        }
+      }
+
+      return offer
+    })
+  )
+} {
 
   const { error } = await supabase
     .from('offers')
@@ -272,7 +320,11 @@ async function updateOfferStatus(
 
       <button
         onClick={() =>
-          updateOfferStatus(offer.id, 'accepted')
+          updateOfferStatus(
+  offer.id,
+  'accepted',
+  offer.listing_id
+)
         }
         className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
       >
@@ -281,7 +333,11 @@ async function updateOfferStatus(
 
       <button
         onClick={() =>
-          updateOfferStatus(offer.id, 'rejected')
+          updateOfferStatus(
+  offer.id,
+  'rejected',
+  offer.listing_id
+)
         }
         className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
       >
