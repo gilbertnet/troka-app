@@ -82,7 +82,16 @@ if (image) {
     }
 
     alert('Listing created successfully')
-
+    setTitle('')
+    setDescription('')
+    setCategory('')
+    setDesiredTrade('')
+    setEstimatedValue('')
+    setCity('')
+    setCountry('Dominican Republic')
+    setCountryCode('DO')
+    setStateCode('')
+    setImage(null)
     setTitle('')
     setDescription('')
     setCategory('')
