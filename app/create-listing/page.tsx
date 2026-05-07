@@ -37,7 +37,7 @@ export default function CreateListingPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser()
-
+alert(JSON.stringify(user))
     if (!user) {
       alert('You must login first')
       return
