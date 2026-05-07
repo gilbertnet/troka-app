@@ -112,9 +112,9 @@ if (!message.trim()) {
   setSendingOffer(false)
 
   if (error) {
-    alert(error.message)
-    return
-  }
+  alert(error?.message || 'Unknown error')
+  return
+}
 
   alert('Offer sent successfully')
 
