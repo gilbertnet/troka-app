@@ -99,19 +99,29 @@ export default function CreateListingPage() {
 </div>
           
 
-          <select
-            className="w-full border rounded-2xl px-5 py-4 bg-white"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Select category</option>
+          <div>
+  <label className="font-bold block mb-2">
+    Category
+  </label>
 
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+  >
+    <option value="">Select category</option>
+
+    {categories.map((item) => (
+      <option key={item} value={item}>
+        {item}
+      </option>
+    ))}
+  </select>
+
+  <p className="text-sm text-slate-500 mt-2">
+    Choose the category that best describes your item.
+  </p>
+</div>
 
           <textarea
             placeholder="Description"
