@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-
+import { Country, City } from 'country-state-city'
 const categories = [
   'Electronics',
   'Vehicles',
@@ -27,7 +27,7 @@ export default function CreateListingPage() {
   const [estimatedValue, setEstimatedValue] = useState('')
   const [city, setCity] = useState('')
   const [country, setCountry] = useState('Dominican Republic')
-
+  const [countryCode, setCountryCode] = useState('DO')
   async function handleCreateListing() {
     const {
       data: { user },
@@ -181,34 +181,61 @@ export default function CreateListingPage() {
     City
   </label>
 
-  <input
-    type="text"
-    placeholder="Example: Santiago"
-    className="w-full border rounded-2xl px-5 py-4"
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
     value={city}
     onChange={(e) => setCity(e.target.value)}
-  />
+  >
+    <option value="">
+      Select city
+    </option>
+
+    {City.getCitiesOfCountry(countryCode)?.map((cityItem) => (
+      <option
+        key={cityItem.name}
+        value={cityItem.name}
+      >
+        {cityItem.name}
+      </option>
+    ))}
+  </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Enter the city where the item is located.
+    Select the city where the item is located.
   </p>
 </div>
 
-          <div>
+ <div>
   <label className="font-bold block mb-2">
     Country
   </label>
 
-  <input
-    type="text"
-    placeholder="Example: Dominican Republic"
-    className="w-full border rounded-2xl px-5 py-4"
-    value={country}
-    onChange={(e) => setCountry(e.target.value)}
-  />
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+    value={countryCode}
+    onChange={(e) => {
+      setCountryCode(e.target.value)
+
+      const selectedCountry = Country.getAllCountries().find(
+        (c) => c.isoCode === e.target.value
+      )
+
+      setCountry(selectedCountry?.name || '')
+      setCity('')
+    }}
+  >
+    {Country.getAllCountries().map((country) => (
+      <option
+        key={country.isoCode}
+        value={country.isoCode}
+      >
+        {country.name}
+      </option>
+    ))}
+  </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Country where the exchange can take place.
+    Select your country.
   </p>
 </div>
 
