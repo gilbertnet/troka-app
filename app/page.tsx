@@ -67,8 +67,8 @@ export default function HomePage() {
 
     if (search) {
       query = query.ilike(
-        'title',
-        `%${search}%`
+  'title',
+  '%' + search + '%'
       )
     }
 
