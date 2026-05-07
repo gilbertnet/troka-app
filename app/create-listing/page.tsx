@@ -180,6 +180,49 @@ export default function CreateListingPage() {
   </p>
 </div>
 
+
+
+
+<div>
+  <label className="font-bold block mb-2">
+    State / Province
+  </label>
+
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+    value={stateCode}
+    onChange={(e) => setStateCode(e.target.value)}
+  >
+    <option value="">
+      Select state or province
+    </option>
+
+    {State.getStatesOfCountry(countryCode).map((state) => (
+      <option
+        key={state.isoCode}
+        value={state.isoCode}
+      >
+        {state.name}
+      </option>
+    ))}
+  </select>
+
+  <p className="text-sm text-slate-500 mt-2">
+    Select your province or state.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
           <div>
   <label className="font-bold block mb-2">
     City
