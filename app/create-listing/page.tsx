@@ -100,7 +100,76 @@ if (image) {
     setCity('')
     setCountry('Dominican Republic')
   }
+//////////////////////////////////////////////////////////////////////////////////////////////
+async function handleCreateListing() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
+  if (!user) {
+    alert('You must login first')
+    return
+  }
+
+  let imageUrl = ''
+
+  if (image) {
+    const fileName = `${Date.now()}-${image.name}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('listings')
+      .upload(fileName, image)
+
+    if (uploadError) {
+      alert(uploadError.message)
+      return
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage
+      .from('listings')
+      .getPublicUrl(fileName)
+
+    imageUrl = publicUrl
+  }
+
+  const { error } = await supabase.from('listings').insert({
+    user_id: user.id,
+    title,
+    description,
+    category,
+    desired_trade: desiredTrade,
+    estimated_value: Number(estimatedValue),
+    city,
+    country,
+    image_url: imageUrl,
+  })
+
+  if (error) {
+    console.log(error)
+
+    alert(error.message)
+
+    return
+  }
+
+  console.log('LISTING CREATED')
+
+  alert('Listing created successfully')
+
+  setTitle('')
+  setDescription('')
+  setCategory('')
+  setDesiredTrade('')
+  setEstimatedValue('')
+  setCity('')
+  setCountry('Dominican Republic')
+  setCountryCode('DO')
+  setStateCode('')
+  setImage(null)
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <main className="min-h-screen bg-slate-50 py-16 px-6">
 
