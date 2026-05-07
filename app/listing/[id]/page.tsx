@@ -80,6 +80,40 @@ async function handleMakeOffer() {
     setListing(data)
     setLoading(false)
   }
+  async function handleMakeOffer() {
+  setSendingOffer(true)
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    alert('You must login first')
+    setSendingOffer(false)
+    return
+  }
+
+  const { error } = await supabase.from('offers').insert({
+    listing_id: listing?.id,
+    sender_id: user.id,
+    message,
+    offered_item: offeredItem,
+    cash_amount: Number(cashAmount),
+  })
+
+  setSendingOffer(false)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  alert('Offer sent successfully')
+
+  setMessage('')
+  setOfferedItem('')
+  setCashAmount('')
+}
 
   if (loading) {
     return (
