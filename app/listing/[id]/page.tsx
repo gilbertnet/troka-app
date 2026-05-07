@@ -287,7 +287,7 @@ if (!message.trim()) {
     />
   </div>
 
-  <<button
+  <button
   onClick={handleMakeOffer}
   disabled={
     sendingOffer ||
