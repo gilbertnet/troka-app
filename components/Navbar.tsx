@@ -189,9 +189,83 @@ export default function Navbar() {
 
         </div>
 
-        {/* BOTTOM ROW */}
+        {/* CATEGORIES BAR */}
 
-        <div className="flex items-center gap-5 mt-4 text-sm font-semibold text-slate-600">
+<div className="flex items-center gap-6 mt-4 overflow-x-auto whitespace-nowrap text-sm font-semibold text-slate-600 pb-2">
+
+  <button
+    onClick={() =>
+      router.push('/?category=Electronics')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Electronics
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Vehicles')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Vehicles
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Real Estate')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Real Estate
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Services')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Services
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Fashion')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Fashion
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Home')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Home
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Technology')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Technology
+  </button>
+
+  <button
+    onClick={() =>
+      router.push('/?category=Sports')
+    }
+    className="hover:text-green-600 transition"
+  >
+    Sports
+  </button>
+
+</div>
 
           <Link
             href="/"
