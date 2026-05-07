@@ -55,10 +55,27 @@ async function handleMakeOffer() {
     setSendingOffer(false)
     return
   }
+const cleanOfferedItem = offeredItem.trim()
+const cleanMessage = message.trim()
+const cleanCashAmount = Number(cashAmount)
+
 if (
-  !offeredItem.trim() &&
-  !cashAmount.trim()
+  cleanOfferedItem === '' &&
+  (!cleanCashAmount || cleanCashAmount <= 0)
 ) {
+  alert('Please add an offered item or cash amount')
+
+  setSendingOffer(false)
+  return
+}
+
+if (cleanMessage === '') {
+  alert('Please write a message')
+
+  setSendingOffer(false)
+  return
+}
+{
   alert('Please add an offered item or cash amount')
 
   setSendingOffer(false)
@@ -71,10 +88,7 @@ if (!message.trim()) {
   setSendingOffer(false)
   return
 }
-if (
-  !offeredItem.trim() &&
-  !cashAmount.trim()
-) {
+ {
   alert('Please add an offered item or cash amount')
 
   setSendingOffer(false)
@@ -91,8 +105,8 @@ if (!message.trim()) {
     listing_id: listing?.id,
     sender_id: user.id,
     message,
-    offered_item: offeredItem,
-    cash_amount: Number(cashAmount),
+    offered_item: cleanOfferedItem,
+    cash_amount: cleanCashAmount,
   })
 
   setSendingOffer(false)
