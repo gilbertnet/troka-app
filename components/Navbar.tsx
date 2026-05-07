@@ -7,49 +7,51 @@ import { supabase } from '@/lib/supabase'
 
 export default function Navbar() {
 
-  //const [loggedIn, setLoggedIn] =
-  //useState(false)
   const [loggedIn, setLoggedIn] =
-  useState(false)
+    useState(false)
+
   const [firstName, setFirstName] =
-  useState('')
+    useState('')
+
   const [menuOpen, setMenuOpen] =
-  useState(false)
-  const [search, setSearch] = useState('')
-  const [mobileMenuOpen, setMobileMenuOpen] =
-  useState(false)
+    useState(false)
+
+  const [search, setSearch] =
+    useState('')
+
   const router = useRouter()
+
   useEffect(() => {
     checkUser()
   }, [])
 
-async function checkUser() {
+  async function checkUser() {
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  if (user) {
+    if (user) {
 
-    setLoggedIn(true)
+      setLoggedIn(true)
 
-    const email =
-      user.email || ''
+      const email =
+        user.email || ''
 
-    const first =
-      email.split('@')[0]
+      const first =
+        email.split('@')[0]
 
-    const cleanName =
-      first.charAt(0).toUpperCase() +
-      first.slice(1)
+      const cleanName =
+        first.charAt(0).toUpperCase() +
+        first.slice(1)
 
-    setFirstName(cleanName)
+      setFirstName(cleanName)
 
-  } else {
+    } else {
 
-    setLoggedIn(false)
+      setLoggedIn(false)
+    }
   }
-}
 
   async function handleLogout() {
 
@@ -57,158 +59,165 @@ async function checkUser() {
 
     window.location.href = '/login'
   }
+
   function handleSearch(
-  e: React.FormEvent
-) {
-  e.preventDefault()
+    e: React.FormEvent
+  ) {
 
-  if (!search.trim()) return
+    e.preventDefault()
 
-  router.push(
-    `/?search=${encodeURIComponent(search)}`
-  )
-}
+    if (!search.trim()) return
+
+    router.push(
+      `/?search=${encodeURIComponent(search)}`
+    )
+  }
 
   return (
-  <nav className="w-full bg-white border-b sticky top-0 z-50">
 
-    <div className="max-w-7xl mx-auto px-4 py-4">
+    <nav className="w-full bg-white border-b sticky top-0 z-50">
 
-      {/* TOP ROW */}
+      <div className="max-w-7xl mx-auto px-4 py-4">
 
-      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        {/* TOP ROW */}
 
-        {/* LOGO */}
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
 
-        <Link
-          href="/"
-          className="text-3xl font-black tracking-tight whitespace-nowrap"
-        >
-          <span className="text-black">
-            TRO
-          </span>
+          {/* LOGO */}
 
-          <span className="text-green-500">
-            KA
-          </span>
-        </Link>
-
-        {/* SEARCH */}
-
-        <form
-          onSubmit={handleSearch}
-          className="w-full flex flex-col md:flex-row md:flex-1 items-stretch md:items-center gap-2"
-        >
-
-          <input
-            type="text"
-            placeholder="Search listings..."
-            value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
-            className="w-full md:flex-1 border rounded-xl px-4 py-3 text-black"
-          />
-
-          <button
-            type="submit"
-            className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl font-bold"
+          <Link
+            href="/"
+            className="text-3xl font-black tracking-tight whitespace-nowrap"
           >
-            Search
-          </button>
 
-        </form>
+            <span className="text-black">
+              TRO
+            </span>
 
-        {/* AUTH */}
+            <span className="text-green-500">
+              KA
+            </span>
 
-        {loggedIn ? (
+          </Link>
 
-  <div className="relative">
+          {/* SEARCH */}
 
-    <button
-      onClick={() =>
-        setMenuOpen(!menuOpen)
-      }
-      className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-4 py-3 rounded-xl font-bold"
-    >
+          <form
+            onSubmit={handleSearch}
+            className="w-full flex flex-col md:flex-row md:flex-1 items-stretch md:items-center gap-2"
+          >
 
-      <span>
-        {firstName}
-      </span>
+            <input
+              type="text"
+              placeholder="Search listings..."
+              value={search}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
+              className="w-full md:flex-1 border rounded-xl px-4 py-3 text-black"
+            />
 
-      <span className="text-sm">
-        ▼
-      </span>
+            <button
+              type="submit"
+              className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl font-bold"
+            >
+              Search
+            </button>
 
-    </button>
+          </form>
 
-    {menuOpen && (
+          {/* USER */}
 
-      <div className="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-xl overflow-hidden z-50">
+          {loggedIn ? (
 
-        <button
-          onClick={() => {
-            setMenuOpen(false)
-            router.push('/profile')
-          }}
-          className="w-full text-left px-5 py-4 hover:bg-slate-100 font-semibold"
-        >
-          Profile
-        </button>
+            <div className="relative">
 
-        <button
-          onClick={handleLogout}
-          className="w-full text-left px-5 py-4 hover:bg-slate-100 text-red-500 font-semibold"
-        >
-          Logout
-        </button>
+              <button
+                onClick={() =>
+                  setMenuOpen(!menuOpen)
+                }
+                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-4 py-3 rounded-xl font-bold"
+              >
+
+                <span>
+                  {firstName}
+                </span>
+
+                <span className="text-sm">
+                  ▼
+                </span>
+
+              </button>
+
+              {menuOpen && (
+
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-2xl shadow-xl overflow-hidden z-50">
+
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false)
+                      router.push('/profile')
+                    }}
+                    className="w-full text-left px-5 py-4 hover:bg-slate-100 font-semibold"
+                  >
+                    Profile
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-5 py-4 hover:bg-slate-100 text-red-500 font-semibold"
+                  >
+                    Logout
+                  </button>
+
+                </div>
+
+              )}
+
+            </div>
+
+          ) : (
+
+            <Link
+              href="/login"
+              className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+            >
+              Login
+            </Link>
+
+          )}
+
+        </div>
+
+        {/* BOTTOM ROW */}
+
+        <div className="flex items-center gap-5 mt-4 text-sm font-semibold text-slate-600">
+
+          <Link
+            href="/"
+            className="hover:text-green-600 transition"
+          >
+            Home
+          </Link>
+
+          <Link
+            href="/create-listing"
+            className="hover:text-green-600 transition"
+          >
+            Create Listing
+          </Link>
+
+          <Link
+            href="/dashboard"
+            className="hover:text-green-600 transition"
+          >
+            Dashboard
+          </Link>
+
+        </div>
 
       </div>
 
-    )}
-
-  </div>
-
-) : (
-
-   <Link
-    href="/login"
-    className="bg-black text-white px-5 py-3 rounded-xl font-bold"
-  >
-    Login
-  </Link>
-
-)}
-
-      <div className="flex items-center gap-5 mt-4 text-sm font-semibold text-slate-600">
-
-        <Link
-          href="/"
-          className="hover:text-green-600 transition"
-        >
-          Home
-        </Link>
-
-        <Link
-          href="/create-listing"
-          className="hover:text-green-600 transition"
-        >
-          Create Listing
-        </Link>
-
-        <Link
-          href="/dashboard"
-          className="hover:text-green-600 transition"
-        >
-          Dashboard
-        </Link>
-
-      </div>
-
-    </div>
-    </div>
-
-  </div>
-  </nav>
-)
+    </nav>
+  )
 }
