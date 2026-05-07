@@ -222,16 +222,16 @@ export default function HomePage() {
                   </span>
 
                   <span
-                    className={`
-                      px-3 py-1 rounded-full text-xs font-bold
-                      ${
-                        listing.status === 'traded'
-                          ? 'bg-green-100 text-green-700'
-                          : listing.status === 'reserved'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-blue-100 text-blue-700'
-                      }
-                    `}
+                    className={
+  'px-3 py-1 rounded-full text-xs font-bold ' +
+  (
+    listing.status === 'traded'
+      ? 'bg-green-100 text-green-700'
+      : listing.status === 'reserved'
+      ? 'bg-yellow-100 text-yellow-700'
+      : 'bg-blue-100 text-blue-700'
+  )
+}
                   >
                     {listing.status}
                   </span>
