@@ -153,7 +153,7 @@ async function updateOfferStatus(
   //  return
  // }
 
-  // If accepted, reject all others
+   If accepted, reject all others
 
   if (status === 'accepted') {
 
