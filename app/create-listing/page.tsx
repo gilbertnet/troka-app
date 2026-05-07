@@ -64,17 +64,7 @@ if (image) {
 
   imageUrl = publicUrl
 }
-  const { error } = await supabase.from('listings').insert({
-  user_id: user.id,
-  title,
-  description,
-  category,
-  desired_trade: desiredTrade,
-  estimated_value: Number(estimatedValue),
-  city,
-  country,
-  image_url: imageUrl,
-})
+    const { error } = await supabase.from('listings').insert({
       user_id: user.id,
       title,
       description,
@@ -83,6 +73,7 @@ if (image) {
       estimated_value: Number(estimatedValue),
       city,
       country,
+      image_url: imageUrl,
     })
 
     if (error) {
