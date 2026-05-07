@@ -291,6 +291,3 @@ export default function HomePage() {
     </main>
   )
 }
-```
-
-Reemplaza TODO el contenido actual de `app/page.tsx` por este archivo completo.
