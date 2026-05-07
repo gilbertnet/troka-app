@@ -198,7 +198,7 @@ export default function HomePage() {
           {listings.map((listing) => (
 
             <Link
-              href={`/listing/${listing.id}`}
+              href={'/listing/' + listing.id}
               key={listing.id}
               className="bg-white rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
             >
