@@ -8,11 +8,11 @@ interface Listing {
   id: string
   title: string
   image_url: string
-  status?: string
 }
 
 interface Offer {
   id: string
+  listing_id: string
   message: string
   offered_item: string
   cash_amount: number
@@ -23,6 +23,7 @@ interface Offer {
 }
 
 export default function DashboardPage() {
+
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
@@ -36,6 +37,7 @@ export default function DashboardPage() {
   }, [])
 
   async function checkUser() {
+
     const {
       data: { user },
     } = await supabase.auth.getUser()
@@ -92,167 +94,58 @@ export default function DashboardPage() {
 
     setSentOffers(sentOffersData || [])
   }
-async function updateOfferStatus(
-  offerId: string,
-  status: string,
-  listingId: string
-) {
 
-  const { error } = await supabase
-    .from('offers')
-    .update({ status })
-    .eq('id', offerId)
+  async function updateOfferStatus(
+    offerId: string,
+    status: string,
+    listingId: string
+  ) {
 
-  if (error) {
-    alert(error.message)
-    return
-  }
-
-  if (status === 'accepted') {
-
-    await supabase
+    const { error } = await supabase
       .from('offers')
-      .update({ status: 'rejected' })
-      .eq('listing_id', listingId)
-      .neq('id', offerId)
-  }
+      .update({ status })
+      .eq('id', offerId)
 
-  setReceivedOffers((prevOffers) =>
-    prevOffers.map((offer: any) => {
+    if (error) {
+      alert(error.message)
+      return
+    }
 
-      if (
-        status === 'accepted' &&
-        offer.id !== offerId &&
-        offer.listing_id === listingId
-      ) {
-        return {
-          ...offer,
-          status: 'rejected',
+    if (status === 'accepted') {
+
+      await supabase
+        .from('offers')
+        .update({ status: 'rejected' })
+        .eq('listing_id', listingId)
+        .neq('id', offerId)
+    }
+
+    setReceivedOffers((prevOffers) =>
+      prevOffers.map((offer) => {
+
+        if (
+          status === 'accepted' &&
+          offer.id !== offerId &&
+          offer.listing_id === listingId
+        ) {
+          return {
+            ...offer,
+            status: 'rejected',
+          }
         }
-      }
 
-      if (offer.id === offerId) {
-        return {
-          ...offer,
-          status,
+        if (offer.id === offerId) {
+          return {
+            ...offer,
+            status,
+          }
         }
-      }
 
-      return offer
-    })
-  )
-} //{
-
-  //const { error } = await supabase
-  //  .from('offers')
-  //  .update({ status })
-  //  .eq('id', offerId)
-
-//  if (error) {
-//    alert(error.message)
-  //  return
- // }
-
-   If accepted, reject all others
-
-  if (status === 'accepted') {
-
-    await supabase
-      .from('offers')
-      .update({ status: 'rejected' })
-      .eq('listing_id', listingId)
-      .neq('id', offerId)
-  }
-
-  setReceivedOffers((prevOffers) =>
-    prevOffers.map((offer) => {
-
-      if (
-        status === 'accepted' &&
-        offer.id !== offerId &&
-        offer.listing_id === listingId
-      ) {
-        return {
-          ...offer,
-          status: 'rejected',
-        }
-      }
-
-      if (offer.id === offerId) {
-        return {
-          ...offer,
-          status,
-        }
-      }
-
-      return offer
-    })
-  )
-} {
-
-  const { error } = await supabase
-    .from('offers')
-    .update({ status })
-    .eq('id', offerId)
-
-  if (error) {
-    alert(error.message)
-    return
-  }
-
-  // If accepted, reject all others
-
-  if (status === 'accepted') {
-
-    await supabase
-      .from('offers')
-      .update({ status: 'rejected' })
-      .eq('listing_id', listingId)
-      .neq('id', offerId)
-  }
-
-  setReceivedOffers((prevOffers) =>
-    prevOffers.map((offer) => {
-
-      if (
-        status === 'accepted' &&
-        offer.id !== offerId &&
-        offer.listings?.id === listingId
-      ) {
-        return {
-          ...offer,
-          status: 'rejected',
-        }
-      }
-
-      if (offer.id === offerId) {
-        return {
-          ...offer,
-          status,
-        }
-      }
-
-      return offer
-    })
-  )
-  const { error } = await supabase
-    .from('offers')
-    .update({ status })
-    .eq('id', offerId)
-
-  if (error) {
-    alert(error.message)
-    return
-  }
-
-  setReceivedOffers((prevOffers) =>
-    prevOffers.map((offer) =>
-      offer.id === offerId
-        ? { ...offer, status }
-        : offer
+        return offer
+      })
     )
-  )
-}
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
 
@@ -387,58 +280,58 @@ async function updateOfferStatus(
                         ${offer.cash_amount}
                       </span>
 
-                     <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
 
-  <span
-    className={`
-      px-4 py-2 rounded-full text-sm font-bold
-      ${
-        offer.status === 'accepted'
-          ? 'bg-green-100 text-green-700'
-          : offer.status === 'rejected'
-          ? 'bg-red-100 text-red-700'
-          : 'bg-slate-100 text-slate-700'
-      }
-    `}
-  >
-    {offer.status}
-  </span>
+                        <span
+                          className={`
+                            px-4 py-2 rounded-full text-sm font-bold
+                            ${
+                              offer.status === 'accepted'
+                                ? 'bg-green-100 text-green-700'
+                                : offer.status === 'rejected'
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-slate-100 text-slate-700'
+                            }
+                          `}
+                        >
+                          {offer.status}
+                        </span>
 
-  {offer.status === 'pending' && (
+                        {offer.status === 'pending' && (
 
-    <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
 
-      <button
-        onClick={() =>
-          updateOfferStatus(
-  offer.id,
-  'accepted',
-  offer.listing_id
-)
-        }
-        className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
-      >
-        Accept
-      </button>
+                            <button
+                              onClick={() =>
+                                updateOfferStatus(
+                                  offer.id,
+                                  'accepted',
+                                  offer.listing_id
+                                )
+                              }
+                              className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
+                            >
+                              Accept
+                            </button>
 
-      <button
-        onClick={() =>
-          updateOfferStatus(
-  offer.id,
-  'rejected',
-  offer.listing_id
-)
-        }
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
-      >
-        Reject
-      </button>
+                            <button
+                              onClick={() =>
+                                updateOfferStatus(
+                                  offer.id,
+                                  'rejected',
+                                  offer.listing_id
+                                )
+                              }
+                              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
+                            >
+                              Reject
+                            </button>
 
-    </div>
+                          </div>
 
-  )}
+                        )}
 
-</div>
+                      </div>
 
                     </div>
 
