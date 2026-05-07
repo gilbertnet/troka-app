@@ -55,7 +55,22 @@ async function handleMakeOffer() {
     setSendingOffer(false)
     return
   }
+if (
+  !offeredItem.trim() &&
+  !cashAmount.trim()
+) {
+  alert('Please add an offered item or cash amount')
 
+  setSendingOffer(false)
+  return
+}
+
+if (!message.trim()) {
+  alert('Please write a message')
+
+  setSendingOffer(false)
+  return
+}
   const { error } = await supabase.from('offers').insert({
     listing_id: listing?.id,
     sender_id: user.id,
