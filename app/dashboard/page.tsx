@@ -2,77 +2,303 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { getUser, signOut } from '@/lib/auth'
+import { supabase } from '@/lib/supabase'
+
+interface Listing {
+  id: string
+  title: string
+  image_url: string
+  status?: string
+}
+
+interface Offer {
+  id: string
+  message: string
+  offered_item: string
+  cash_amount: number
+  status: string
+  listings: {
+    title: string
+  }
+}
 
 export default function DashboardPage() {
   const router = useRouter()
 
-  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  const [myListings, setMyListings] = useState<Listing[]>([])
+  const [receivedOffers, setReceivedOffers] = useState<Offer[]>([])
+  const [sentOffers, setSentOffers] = useState<Offer[]>([])
 
   useEffect(() => {
-    async function loadUser() {
-      const user = await getUser()
-
-      if (!user) {
-        router.push('/login')
-        return
-      }
-
-      setEmail(user.email || '')
-    }
-
-    loadUser()
+    checkUser()
   }, [])
 
-  async function handleLogout() {
-    await signOut()
+  async function checkUser() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      router.push('/login')
+      return
+    }
+
+    await fetchDashboardData(user.id)
+
+    setLoading(false)
+  }
+
+  async function fetchDashboardData(userId: string) {
+
+    const { data: listingsData } = await supabase
+      .from('listings')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    setMyListings(listingsData || [])
+
+    const listingIds =
+      listingsData?.map((listing) => listing.id) || []
+
+    if (listingIds.length > 0) {
+
+      const { data: offersReceivedData } = await supabase
+        .from('offers')
+        .select(`
+          *,
+          listings (
+            title
+          )
+        `)
+        .in('listing_id', listingIds)
+        .order('created_at', { ascending: false })
+
+      setReceivedOffers(offersReceivedData || [])
+    }
+
+    const { data: sentOffersData } = await supabase
+      .from('offers')
+      .select(`
+        *,
+        listings (
+          title
+        )
+      `)
+      .eq('sender_id', userId)
+      .order('created_at', { ascending: false })
+
+    setSentOffers(sentOffersData || [])
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut()
 
     router.push('/login')
   }
 
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-2xl font-bold">
+          Loading dashboard...
+        </p>
+      </main>
+    )
+  }
+
   return (
-    <main className="min-h-screen bg-slate-50 p-10">
+    <main className="min-h-screen bg-slate-100 py-10 px-6">
 
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
-        <div className="bg-white rounded-[40px] p-10 border shadow-sm">
+        <div className="flex items-center justify-between mb-10">
 
-          <div className="flex items-center justify-between mb-10">
+          <div>
+            <h1 className="text-5xl font-black">
+              Dashboard
+            </h1>
 
-            <div>
-              <h1 className="text-5xl font-black mb-3">
-                Dashboard
-              </h1>
+            <p className="text-slate-500 mt-2">
+              Manage your listings and offers.
+            </p>
+          </div>
 
-              <p className="text-slate-500 text-lg">
-                Logged in as {email}
-              </p>
+          <button
+            onClick={signOut}
+            className="bg-black text-white px-6 py-4 rounded-2xl font-bold"
+          >
+            Logout
+          </button>
+
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+
+          {/* MY LISTINGS */}
+
+          <div className="bg-white rounded-[30px] p-8 shadow-lg border">
+
+            <h2 className="text-3xl font-black mb-6">
+              My Listings
+            </h2>
+
+            <div className="space-y-5">
+
+              {myListings.length === 0 ? (
+                <p>No listings yet.</p>
+              ) : (
+                myListings.map((listing) => (
+
+                  <div
+                    key={listing.id}
+                    className="flex items-center gap-4 border rounded-2xl p-4"
+                  >
+
+                    <img
+                      src={
+                        listing.image_url ||
+                        'https://placehold.co/100x100'
+                      }
+                      alt={listing.title}
+                      className="w-20 h-20 rounded-xl object-cover"
+                    />
+
+                    <div>
+                      <p className="font-black">
+                        {listing.title}
+                      </p>
+                    </div>
+
+                  </div>
+
+                ))
+              )}
+
             </div>
-
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-6 py-4 rounded-2xl font-black"
-            >
-              Logout
-            </button>
 
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          {/* RECEIVED OFFERS */}
 
-            <div className="bg-slate-100 rounded-[30px] p-8">
-              <h2 className="text-4xl font-black mb-2">0</h2>
-              <p className="text-slate-500">Listings</p>
+          <div className="bg-white rounded-[30px] p-8 shadow-lg border">
+
+            <h2 className="text-3xl font-black mb-6">
+              Offers Received
+            </h2>
+
+            <div className="space-y-5">
+
+              {receivedOffers.length === 0 ? (
+                <p>No offers received.</p>
+              ) : (
+                receivedOffers.map((offer) => (
+
+                  <div
+                    key={offer.id}
+                    className="border rounded-2xl p-5"
+                  >
+
+                    <p className="font-black mb-2">
+                      {offer.listings?.title}
+                    </p>
+
+                    <p className="text-sm text-slate-500 mb-2">
+                      Offered Item:
+                    </p>
+
+                    <p className="font-semibold mb-4">
+                      {offer.offered_item || 'Cash Offer'}
+                    </p>
+
+                    <p className="text-sm text-slate-500 mb-2">
+                      Message:
+                    </p>
+
+                    <p className="mb-4">
+                      {offer.message}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+
+                      <span className="font-black text-green-600">
+                        ${offer.cash_amount}
+                      </span>
+
+                      <span className="bg-slate-100 px-4 py-2 rounded-full text-sm font-bold">
+                        {offer.status}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                ))
+              )}
+
             </div>
 
-            <div className="bg-slate-100 rounded-[30px] p-8">
-              <h2 className="text-4xl font-black mb-2">0</h2>
-              <p className="text-slate-500">Trade Offers</p>
-            </div>
+          </div>
 
-            <div className="bg-slate-100 rounded-[30px] p-8">
-              <h2 className="text-4xl font-black mb-2">0</h2>
-              <p className="text-slate-500">Messages</p>
+          {/* SENT OFFERS */}
+
+          <div className="bg-white rounded-[30px] p-8 shadow-lg border">
+
+            <h2 className="text-3xl font-black mb-6">
+              Offers Sent
+            </h2>
+
+            <div className="space-y-5">
+
+              {sentOffers.length === 0 ? (
+                <p>No offers sent.</p>
+              ) : (
+                sentOffers.map((offer) => (
+
+                  <div
+                    key={offer.id}
+                    className="border rounded-2xl p-5"
+                  >
+
+                    <p className="font-black mb-2">
+                      {offer.listings?.title}
+                    </p>
+
+                    <p className="text-sm text-slate-500 mb-2">
+                      Offered Item:
+                    </p>
+
+                    <p className="font-semibold mb-4">
+                      {offer.offered_item || 'Cash Offer'}
+                    </p>
+
+                    <p className="text-sm text-slate-500 mb-2">
+                      Message:
+                    </p>
+
+                    <p className="mb-4">
+                      {offer.message}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+
+                      <span className="font-black text-green-600">
+                        ${offer.cash_amount}
+                      </span>
+
+                      <span className="bg-slate-100 px-4 py-2 rounded-full text-sm font-bold">
+                        {offer.status}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                ))
+              )}
+
             </div>
 
           </div>
