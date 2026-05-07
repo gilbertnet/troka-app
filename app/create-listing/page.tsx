@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Country, City } from 'country-state-city'
+import { Country, State, City } from 'country-state-city'
 const categories = [
   'Electronics',
   'Vehicles',
@@ -25,9 +25,13 @@ export default function CreateListingPage() {
   const [category, setCategory] = useState('')
   const [desiredTrade, setDesiredTrade] = useState('')
   const [estimatedValue, setEstimatedValue] = useState('')
+  //const [city, setCity] = useState('')
+  //const [country, setCountry] = useState('Dominican Republic')
+  //const [countryCode, setCountryCode] = useState('DO')
   const [city, setCity] = useState('')
   const [country, setCountry] = useState('Dominican Republic')
   const [countryCode, setCountryCode] = useState('DO')
+  const [stateCode, setStateCode] = useState('')
   async function handleCreateListing() {
     const {
       data: { user },
