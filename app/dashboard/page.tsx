@@ -92,7 +92,29 @@ export default function DashboardPage() {
 
     setSentOffers(sentOffersData || [])
   }
+async function updateOfferStatus(
+  offerId: string,
+  status: string
+) {
 
+  const { error } = await supabase
+    .from('offers')
+    .update({ status })
+    .eq('id', offerId)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  setReceivedOffers((prevOffers) =>
+    prevOffers.map((offer) =>
+      offer.id === offerId
+        ? { ...offer, status }
+        : offer
+    )
+  )
+}
   async function signOut() {
     await supabase.auth.signOut()
 
@@ -227,9 +249,50 @@ export default function DashboardPage() {
                         ${offer.cash_amount}
                       </span>
 
-                      <span className="bg-slate-100 px-4 py-2 rounded-full text-sm font-bold">
-                        {offer.status}
-                      </span>
+                     <div className="flex items-center gap-2">
+
+  <span
+    className={`
+      px-4 py-2 rounded-full text-sm font-bold
+      ${
+        offer.status === 'accepted'
+          ? 'bg-green-100 text-green-700'
+          : offer.status === 'rejected'
+          ? 'bg-red-100 text-red-700'
+          : 'bg-slate-100 text-slate-700'
+      }
+    `}
+  >
+    {offer.status}
+  </span>
+
+  {offer.status === 'pending' && (
+
+    <div className="flex items-center gap-2">
+
+      <button
+        onClick={() =>
+          updateOfferStatus(offer.id, 'accepted')
+        }
+        className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
+      >
+        Accept
+      </button>
+
+      <button
+        onClick={() =>
+          updateOfferStatus(offer.id, 'rejected')
+        }
+        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold"
+      >
+        Reject
+      </button>
+
+    </div>
+
+  )}
+
+</div>
 
                     </div>
 
