@@ -112,11 +112,12 @@ export default function HomePage() {
                       {listing.city}, {listing.country}
                     </span>
 
-                    <button
-                      className="bg-black text-white px-5 py-3 rounded-xl font-bold"
-                    >
-                      View
-                    </button>
+                    <a
+  href={`/listing/${listing.id}`}
+  className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+>
+  View
+</a>
 
                   </div>
 
