@@ -141,17 +141,17 @@ async function updateOfferStatus(
       return offer
     })
   )
-} {
+} //{
 
-  const { error } = await supabase
-    .from('offers')
-    .update({ status })
-    .eq('id', offerId)
+  //const { error } = await supabase
+  //  .from('offers')
+  //  .update({ status })
+  //  .eq('id', offerId)
 
-  if (error) {
-    alert(error.message)
-    return
-  }
+//  if (error) {
+//    alert(error.message)
+  //  return
+ // }
 
   // If accepted, reject all others
 
