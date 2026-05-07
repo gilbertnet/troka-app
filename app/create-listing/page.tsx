@@ -179,80 +179,7 @@ export default function CreateListingPage() {
     Approximate market value of your item in USD.
   </p>
 </div>
-
-
-
-
 <div>
-  <label className="font-bold block mb-2">
-    State / Province
-  </label>
-
-  <select
-    className="w-full border rounded-2xl px-5 py-4 bg-white"
-    value={stateCode}
-    onChange={(e) => setStateCode(e.target.value)}
-  >
-    <option value="">
-      Select state or province
-    </option>
-
-    {State.getStatesOfCountry(countryCode).map((state) => (
-      <option
-        key={state.isoCode}
-        value={state.isoCode}
-      >
-        {state.name}
-      </option>
-    ))}
-  </select>
-
-  <p className="text-sm text-slate-500 mt-2">
-    Select your province or state.
-  </p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-          <div>
-  <label className="font-bold block mb-2">
-    City
-  </label>
-
-  <select
-    className="w-full border rounded-2xl px-5 py-4 bg-white"
-    value={city}
-    onChange={(e) => setCity(e.target.value)}
-  >
-    <option value="">
-      Select city
-    </option>
-
-    {City.getCitiesOfCountry(countryCode)?.map((cityItem) => (
-      <option
-        key={cityItem.name}
-        value={cityItem.name}
-      >
-        {cityItem.name}
-      </option>
-    ))}
-  </select>
-
-  <p className="text-sm text-slate-500 mt-2">
-    Select the city where the item is located.
-  </p>
-</div>
-
- <div>
   <label className="font-bold block mb-2">
     Country
   </label>
@@ -285,7 +212,62 @@ export default function CreateListingPage() {
     Select your country.
   </p>
 </div>
+<div>
+  <label className="font-bold block mb-2">
+    State / Province
+  </label>
 
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+    value={stateCode}
+    onChange={(e) => setStateCode(e.target.value)}
+  >
+    <option value="">
+      Select state or province
+    </option>
+
+    {State.getStatesOfCountry(countryCode).map((state) => (
+      <option
+        key={state.isoCode}
+        value={state.isoCode}
+      >
+        {state.name}
+      </option>
+    ))}
+  </select>
+
+  <p className="text-sm text-slate-500 mt-2">
+    Select your province or state.
+  </p>
+</div>
+          <div>
+  <label className="font-bold block mb-2">
+    City
+  </label>
+
+  <select
+    className="w-full border rounded-2xl px-5 py-4 bg-white"
+    value={city}
+    onChange={(e) => setCity(e.target.value)}
+  >
+    <option value="">
+      Select city
+    </option>
+
+    {City.getCitiesOfCountry(countryCode)?.map((cityItem) => (
+      <option
+        key={cityItem.name}
+        value={cityItem.name}
+      >
+        {cityItem.name}
+      </option>
+    ))}
+  </select>
+
+  <p className="text-sm text-slate-500 mt-2">
+    Select the city where the item is located.
+  </p>
+</div>
           <button
             onClick={handleCreateListing}
             className="w-full bg-green-500 text-white py-5 rounded-2xl font-black text-lg"
