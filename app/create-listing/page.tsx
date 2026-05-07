@@ -80,13 +80,24 @@ export default function CreateListingPage() {
 
         <div className="space-y-5">
 
-          <input
-            type="text"
-            placeholder="Title"
-            className="w-full border rounded-2xl px-5 py-4"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+         <div>
+  <label className="font-bold block mb-2">
+    Listing Title
+  </label>
+
+  <input
+    type="text"
+    placeholder="Example: iPhone 14 Pro Max"
+    className="w-full border rounded-2xl px-5 py-4"
+    value={title}
+    onChange={(e) => setTitle(e.target.value)}
+  />
+
+  <p className="text-sm text-slate-500 mt-2">
+    Write a short and clear title for your item.
+  </p>
+</div>
+          
 
           <select
             className="w-full border rounded-2xl px-5 py-4 bg-white"
