@@ -66,12 +66,24 @@ export default function Navbar() {
 
     e.preventDefault()
 
-    if (!search.trim()) return
+    const cleanSearch =
+      search.trim()
+
+    if (!cleanSearch) {
+
+      router.push('/')
+
+      window.location.reload()
+
+      return
+    }
 
     router.push(
       '/?search=' +
-      encodeURIComponent(search)
+      encodeURIComponent(cleanSearch)
     )
+
+    window.location.reload()
   }
 
   return (
@@ -196,7 +208,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Electronics')
+              window.location.href =
+                '/?category=Electronics'
             }
             className="hover:text-green-600 transition"
           >
@@ -205,7 +218,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Vehicles')
+              window.location.href =
+                '/?category=Vehicles'
             }
             className="hover:text-green-600 transition"
           >
@@ -214,7 +228,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Real Estate')
+              window.location.href =
+                '/?category=Real Estate'
             }
             className="hover:text-green-600 transition"
           >
@@ -223,7 +238,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Services')
+              window.location.href =
+                '/?category=Services'
             }
             className="hover:text-green-600 transition"
           >
@@ -232,7 +248,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Fashion')
+              window.location.href =
+                '/?category=Fashion'
             }
             className="hover:text-green-600 transition"
           >
@@ -241,7 +258,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Home')
+              window.location.href =
+                '/?category=Home'
             }
             className="hover:text-green-600 transition"
           >
@@ -250,7 +268,8 @@ export default function Navbar() {
 
           <button
             onClick={() =>
-              router.push('/?category=Technology')
+              window.location.href =
+                '/?category=Technology'
             }
             className="hover:text-green-600 transition"
           >
