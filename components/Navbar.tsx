@@ -69,7 +69,8 @@ export default function Navbar() {
     if (!search.trim()) return
 
     router.push(
-      `/?search=${encodeURIComponent(search)}`
+      '/?search=' +
+      encodeURIComponent(search)
     )
   }
 
@@ -77,17 +78,17 @@ export default function Navbar() {
 
     <nav className="w-full bg-white border-b sticky top-0 z-50">
 
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-3 md:px-4 py-4">
 
-        {/* TOP ROW */}
+        {/* TOP */}
 
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
+        <div className="flex items-center gap-3">
 
           {/* LOGO */}
 
           <Link
             href="/"
-            className="text-3xl font-black tracking-tight whitespace-nowrap"
+            className="text-2xl md:text-3xl font-black tracking-tight whitespace-nowrap"
           >
 
             <span className="text-black">
@@ -104,24 +105,24 @@ export default function Navbar() {
 
           <form
             onSubmit={handleSearch}
-            className="w-full flex flex-col md:flex-row md:flex-1 items-stretch md:items-center gap-2"
+            className="flex-1 relative"
           >
 
             <input
               type="text"
-              placeholder="Search listings..."
+              placeholder="Search..."
               value={search}
               onChange={(e) =>
                 setSearch(e.target.value)
               }
-              className="w-full md:flex-1 border rounded-xl px-4 py-3 text-black"
+              className="w-full border rounded-full pl-5 pr-12 py-3 text-black text-sm md:text-base"
             />
 
             <button
               type="submit"
-              className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl font-bold"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-full flex items-center justify-center"
             >
-              Search
+              🔍
             </button>
 
           </form>
@@ -136,14 +137,14 @@ export default function Navbar() {
                 onClick={() =>
                   setMenuOpen(!menuOpen)
                 }
-                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-4 py-3 rounded-xl font-bold"
+                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-3 md:px-4 py-3 rounded-xl font-bold text-sm"
               >
 
-                <span>
+                <span className="max-w-[70px] truncate">
                   {firstName}
                 </span>
 
-                <span className="text-sm">
+                <span className="text-xs">
                   ▼
                 </span>
 
@@ -180,7 +181,7 @@ export default function Navbar() {
 
             <Link
               href="/login"
-              className="bg-black text-white px-5 py-3 rounded-xl font-bold"
+              className="bg-black text-white px-4 py-3 rounded-xl font-bold text-sm"
             >
               Login
             </Link>
@@ -189,9 +190,9 @@ export default function Navbar() {
 
         </div>
 
-        {/* CATEGORIES BAR */}
+        {/* CATEGORIES */}
 
-        <div className="flex items-center gap-6 mt-4 overflow-x-auto whitespace-nowrap text-sm font-semibold text-slate-600 pb-2">
+        <div className="flex items-center gap-5 mt-4 overflow-x-auto whitespace-nowrap text-xs md:text-sm font-semibold text-slate-600 pb-2">
 
           <button
             onClick={() =>
@@ -254,15 +255,6 @@ export default function Navbar() {
             className="hover:text-green-600 transition"
           >
             Technology
-          </button>
-
-          <button
-            onClick={() =>
-              router.push('/?category=Sports')
-            }
-            className="hover:text-green-600 transition"
-          >
-            Sports
           </button>
 
         </div>

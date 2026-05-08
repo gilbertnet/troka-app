@@ -98,11 +98,11 @@ export default function HomePage() {
 
     return (
 
-      <main className="min-h-screen bg-slate-100 px-6 py-10">
+      <main className="min-h-screen bg-slate-100 px-4 py-6">
 
         <div className="max-w-7xl mx-auto">
 
-          <h1 className="text-4xl font-black">
+          <h1 className="text-3xl font-black">
             Loading listings...
           </h1>
 
@@ -114,21 +114,21 @@ export default function HomePage() {
 
   return (
 
-    <main className="min-h-screen bg-slate-100 px-6 py-10">
+    <main className="min-h-screen bg-slate-100 px-3 md:px-6 py-6 md:py-10">
 
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
 
           <div>
 
-            <h1 className="text-5xl font-black mb-2">
+            <h1 className="text-3xl md:text-5xl font-black mb-2">
               Marketplace
             </h1>
 
-            <p className="text-slate-500 text-lg">
+            <p className="text-slate-500 text-sm md:text-lg">
               Discover products and trade opportunities.
             </p>
 
@@ -158,7 +158,7 @@ export default function HomePage() {
                 href="/"
                 className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold"
               >
-                Clear Filters
+                Clear
               </Link>
 
             </div>
@@ -171,9 +171,9 @@ export default function HomePage() {
 
         {listings.length === 0 ? (
 
-          <div className="bg-white rounded-[30px] border shadow-sm p-16 text-center">
+          <div className="bg-white rounded-[30px] border shadow-sm p-10 text-center">
 
-            <h2 className="text-3xl font-black mb-4">
+            <h2 className="text-2xl font-black mb-4">
               No listings found
             </h2>
 
@@ -192,14 +192,14 @@ export default function HomePage() {
 
         ) : (
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-8">
 
             {listings.map((listing) => (
 
               <Link
                 href={'/listing/' + listing.id}
                 key={listing.id}
-                className="bg-white rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
+                className="bg-white rounded-[22px] md:rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
               >
 
                 <div className="aspect-square overflow-hidden bg-slate-200">
@@ -212,17 +212,17 @@ export default function HomePage() {
 
                 </div>
 
-                <div className="p-6">
+                <div className="p-3 md:p-6">
 
-                  <div className="flex items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center justify-between gap-2 mb-3">
 
-                    <span className="bg-slate-100 px-3 py-1 rounded-full text-xs font-bold text-slate-700">
+                    <span className="bg-slate-100 px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold text-slate-700 truncate">
                       {listing.category}
                     </span>
 
                     <span
                       className={
-                        'px-3 py-1 rounded-full text-xs font-bold ' +
+                        'px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold ' +
                         (
                           listing.status === 'traded'
                             ? 'bg-green-100 text-green-700'
@@ -237,40 +237,36 @@ export default function HomePage() {
 
                   </div>
 
-                  <h2 className="text-2xl font-black mb-3 line-clamp-1">
+                  <h2 className="text-sm md:text-2xl font-black mb-2 md:mb-3 line-clamp-1">
                     {listing.title}
                   </h2>
 
-                  <p className="text-slate-500 mb-5 line-clamp-2">
+                  <p className="text-slate-500 mb-3 md:mb-5 text-xs md:text-base line-clamp-2 hidden md:block">
                     {listing.description}
                   </p>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
 
                     <div>
 
-                      <p className="text-sm text-slate-400">
-                        Estimated Value
+                      <p className="text-[10px] md:text-sm text-slate-400">
+                        Value
                       </p>
 
-                      <p className="text-2xl font-black text-green-600">
+                      <p className="text-sm md:text-2xl font-black text-green-600">
                         ${listing.estimated_value}
                       </p>
 
                     </div>
 
-                    <div className="text-right">
+                    <div className="text-left md:text-right">
 
-                      <p className="text-sm text-slate-400">
+                      <p className="text-[10px] md:text-sm text-slate-400">
                         Location
                       </p>
 
-                      <p className="font-semibold text-slate-700">
+                      <p className="font-semibold text-[11px] md:text-base text-slate-700 line-clamp-1">
                         {listing.city}
-                      </p>
-
-                      <p className="text-sm text-slate-500">
-                        {listing.country}
                       </p>
 
                     </div>
