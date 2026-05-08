@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { Plus } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 interface Listing {
@@ -135,21 +136,21 @@ export default function ListingsBrowser() {
 
   return (
 
-    <main className="min-h-screen bg-slate-100 px-3 md:px-6 py-6 md:py-10">
+    <main className="min-h-screen bg-slate-100 px-3 md:px-6 py-4 md:py-10">
 
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 mb-4 md:mb-8">
 
           <div>
 
-            <h1 className="text-3xl md:text-5xl font-black mb-2">
+            <h1 className="text-2xl md:text-5xl font-black mb-1 md:mb-2">
               Marketplace
             </h1>
 
-            <p className="text-slate-500 text-sm md:text-lg">
+            <p className="text-slate-500 text-xs md:text-lg">
               Discover products and trade opportunities.
             </p>
 
@@ -213,40 +214,40 @@ export default function ListingsBrowser() {
 
           <>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div className="grid grid-cols-4 gap-2 md:gap-3 mb-4 md:mb-5">
 
-            <div className="bg-white border rounded-2xl px-4 py-3">
-              <p className="text-[11px] uppercase font-black text-slate-400">
+            <div className="bg-white border rounded-2xl px-2 md:px-4 py-2 md:py-3">
+              <p className="text-[9px] md:text-[11px] uppercase font-black text-slate-400">
                 Items
               </p>
-              <p className="text-2xl font-black">
+              <p className="text-lg md:text-2xl font-black">
                 {listings.length}
               </p>
             </div>
 
-            <div className="bg-white border rounded-2xl px-4 py-3">
-              <p className="text-[11px] uppercase font-black text-slate-400">
+            <div className="bg-white border rounded-2xl px-2 md:px-4 py-2 md:py-3">
+              <p className="text-[9px] md:text-[11px] uppercase font-black text-slate-400">
                 Available
               </p>
-              <p className="text-2xl font-black text-green-600">
+              <p className="text-lg md:text-2xl font-black text-green-600">
                 {availableListings.length}
               </p>
             </div>
 
-            <div className="bg-white border rounded-2xl px-4 py-3">
-              <p className="text-[11px] uppercase font-black text-slate-400">
+            <div className="bg-white border rounded-2xl px-2 md:px-4 py-2 md:py-3">
+              <p className="text-[9px] md:text-[11px] uppercase font-black text-slate-400">
                 Countries
               </p>
-              <p className="text-2xl font-black">
+              <p className="text-lg md:text-2xl font-black">
                 {countries.length}
               </p>
             </div>
 
-            <div className="bg-white border rounded-2xl px-4 py-3">
-              <p className="text-[11px] uppercase font-black text-slate-400">
-                Total Value
+            <div className="bg-white border rounded-2xl px-2 md:px-4 py-2 md:py-3">
+              <p className="text-[9px] md:text-[11px] uppercase font-black text-slate-400">
+                Value
               </p>
-              <p className="text-xl md:text-2xl font-black">
+              <p className="text-sm md:text-2xl font-black truncate">
                 {formattedTotalValue}
               </p>
             </div>
@@ -255,14 +256,14 @@ export default function ListingsBrowser() {
 
           {visibleCategories.length > 0 && (
 
-            <div className="flex gap-2 overflow-x-auto pb-3 mb-2">
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-1 md:mb-2">
 
               {visibleCategories.map(([categoryName, count]) => (
 
                 <Link
                   href={'/?category=' + encodeURIComponent(categoryName)}
                   key={categoryName}
-                  className="bg-white border hover:border-green-500 transition rounded-full px-4 py-2 text-xs font-black whitespace-nowrap"
+                  className="bg-white border hover:border-green-500 transition rounded-full px-3 md:px-4 py-2 text-[11px] md:text-xs font-black whitespace-nowrap"
                 >
                   {categoryName}
                   <span className="ml-2 text-slate-400">
@@ -283,7 +284,7 @@ export default function ListingsBrowser() {
               <Link
                 href={'/listing/' + listing.id}
                 key={listing.id}
-                className="bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition duration-300"
+                className="bg-white rounded-xl md:rounded-2xl overflow-hidden border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition duration-300"
               >
 
                 <div className="aspect-square overflow-hidden bg-slate-200">
@@ -296,17 +297,17 @@ export default function ListingsBrowser() {
 
                 </div>
 
-                <div className="p-3 md:p-4">
+                <div className="p-2.5 md:p-4">
 
-                  <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center justify-between gap-1.5 md:gap-2 mb-2">
 
-                    <span className="bg-slate-100 px-2 py-1 rounded-full text-[10px] font-bold text-slate-700 truncate">
+                    <span className="bg-slate-100 px-2 py-1 rounded-full text-[9px] md:text-[10px] font-bold text-slate-700 truncate">
                       {listing.category}
                     </span>
 
                     <span
                       className={
-                        'px-2 py-1 rounded-full text-[10px] font-bold ' +
+                        'px-2 py-1 rounded-full text-[9px] md:text-[10px] font-bold ' +
                         (
                           listing.status === 'traded'
                             ? 'bg-green-100 text-green-700'
@@ -321,7 +322,7 @@ export default function ListingsBrowser() {
 
                   </div>
 
-                  <h2 className="text-sm md:text-lg font-black mb-2 line-clamp-1">
+                  <h2 className="text-[13px] md:text-lg font-black mb-1.5 md:mb-2 line-clamp-1">
                     {listing.title}
                   </h2>
 
@@ -331,7 +332,7 @@ export default function ListingsBrowser() {
 
                   {listing.desired_trade && (
 
-                    <div className="bg-slate-50 rounded-xl px-3 py-2 mb-3">
+                    <div className="hidden md:block bg-slate-50 rounded-xl px-3 py-2 mb-3">
                       <p className="text-[10px] font-black uppercase text-slate-400">
                         Wants
                       </p>
@@ -342,11 +343,11 @@ export default function ListingsBrowser() {
 
                   )}
 
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 md:gap-2">
 
                     <div>
 
-                      <p className="text-[10px] md:text-xs text-slate-400">
+                      <p className="hidden md:block text-xs text-slate-400">
                         Value
                       </p>
 
@@ -358,13 +359,15 @@ export default function ListingsBrowser() {
 
                     <div className="text-left sm:text-right">
 
-                      <p className="text-[10px] md:text-xs text-slate-400">
+                      <p className="hidden md:block text-xs text-slate-400">
                         Location
                       </p>
 
                       <p className="font-semibold text-[11px] md:text-sm text-slate-700 line-clamp-1">
                         {listing.city}
-                        {listing.country ? ', ' + listing.country : ''}
+                        <span className="hidden md:inline">
+                          {listing.country ? ', ' + listing.country : ''}
+                        </span>
                       </p>
 
                     </div>
@@ -384,6 +387,14 @@ export default function ListingsBrowser() {
         )}
 
       </div>
+
+      <Link
+        href="/create-listing"
+        aria-label="Create listing"
+        className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-xl shadow-green-900/20 md:hidden"
+      >
+        <Plus className="h-7 w-7" />
+      </Link>
 
     </main>
   )

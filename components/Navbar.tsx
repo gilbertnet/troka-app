@@ -87,7 +87,7 @@ export default function Navbar() {
 
     <nav className="w-full bg-white border-b sticky top-0 z-50">
 
-      <div className="max-w-7xl mx-auto px-3 md:px-4 py-4">
+      <div className="max-w-7xl mx-auto px-3 md:px-4 py-3 md:py-4">
 
         {/* TOP */}
 
@@ -97,7 +97,7 @@ export default function Navbar() {
 
           <Link
             href="/"
-            className="text-2xl md:text-3xl font-black tracking-tight whitespace-nowrap"
+            className="text-xl md:text-3xl font-black tracking-tight whitespace-nowrap"
           >
 
             <span className="text-black">
@@ -113,6 +113,7 @@ export default function Navbar() {
           {/* SEARCH */}
 
           <form
+            id="marketplace-search"
             onSubmit={handleSearch}
             className="flex-1 relative"
           >
@@ -124,13 +125,13 @@ export default function Navbar() {
               onChange={(e) =>
                 setSearch(e.target.value)
               }
-              className="w-full border rounded-full pl-5 pr-12 py-3 text-black text-sm md:text-base"
+              className="w-full border rounded-full pl-4 md:pl-5 pr-11 md:pr-12 py-2.5 md:py-3 text-black text-sm md:text-base"
             />
 
             <button
               type="submit"
               aria-label="Search listings"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-full flex items-center justify-center"
+              className="absolute right-1.5 md:right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -147,7 +148,7 @@ export default function Navbar() {
                 onClick={() =>
                   setMenuOpen(!menuOpen)
                 }
-                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-3 md:px-4 py-3 rounded-xl font-bold text-sm"
+                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 transition px-3 md:px-4 py-2.5 md:py-3 rounded-xl font-bold text-sm"
               >
 
                 <span className="max-w-[70px] truncate">
@@ -189,7 +190,7 @@ export default function Navbar() {
 
             <Link
               href="/login"
-              className="bg-black text-white px-4 py-3 rounded-xl font-bold text-sm"
+              className="hidden sm:block bg-black text-white px-4 py-3 rounded-xl font-bold text-sm"
             >
               Login
             </Link>
@@ -200,14 +201,14 @@ export default function Navbar() {
 
         {/* CATEGORIES */}
 
-        <div className="flex items-center gap-5 mt-4 overflow-x-auto whitespace-nowrap text-xs md:text-sm font-semibold text-slate-600 pb-2">
+        <div className="flex items-center gap-2 md:gap-5 mt-3 md:mt-4 overflow-x-auto whitespace-nowrap text-[11px] md:text-sm font-semibold text-slate-600 pb-1 md:pb-2">
 
           <button
             onClick={() =>
               window.location.href =
                 '/?category=Electronics'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Electronics
           </button>
@@ -217,7 +218,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Vehicles'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Vehicles
           </button>
@@ -227,7 +228,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Real Estate'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Real Estate
           </button>
@@ -237,7 +238,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Services'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Services
           </button>
@@ -247,7 +248,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Fashion'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Fashion
           </button>
@@ -257,7 +258,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Home'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Home
           </button>
@@ -267,7 +268,7 @@ export default function Navbar() {
               window.location.href =
                 '/?category=Technology'
             }
-            className="hover:text-green-600 transition"
+            className="bg-slate-100 md:bg-transparent px-3 md:px-0 py-1.5 md:py-0 rounded-full hover:text-green-600 transition"
           >
             Technology
           </button>
