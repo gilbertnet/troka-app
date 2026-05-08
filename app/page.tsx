@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 interface Listing {
@@ -18,34 +19,19 @@ interface Listing {
 
 export default function HomePage() {
 
+  const searchParams = useSearchParams()
+
   const [listings, setListings] =
     useState<Listing[]>([])
 
   const [loading, setLoading] =
     useState(true)
 
-  const [search, setSearch] =
-    useState('')
+  const search =
+    searchParams.get('search') || ''
 
-  const [category, setCategory] =
-    useState('')
-
-  useEffect(() => {
-
-    const params = new URLSearchParams(
-      window.location.search
-    )
-
-    const searchParam =
-      params.get('search') || ''
-
-    const categoryParam =
-      params.get('category') || ''
-
-    setSearch(searchParam)
-    setCategory(categoryParam)
-
-  }, [])
+  const category =
+    searchParams.get('category') || ''
 
   useEffect(() => {
     fetchListings()
