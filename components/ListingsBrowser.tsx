@@ -12,6 +12,7 @@ interface Listing {
   category: string
   image_url: string
   estimated_value: number
+  desired_trade: string
   country: string
   city: string
   status: string
@@ -28,6 +29,44 @@ export default function ListingsBrowser() {
 
   const [loading, setLoading] =
     useState(true)
+
+  const availableListings = listings.filter(
+    (listing) => listing.status === 'available'
+  )
+
+  const countries = Array.from(
+    new Set(
+      listings
+        .map((listing) => listing.country)
+        .filter(Boolean)
+    )
+  )
+
+  const categoryCounts = listings.reduce<Record<string, number>>(
+    (counts, listing) => {
+      counts[listing.category] = (counts[listing.category] || 0) + 1
+      return counts
+    },
+    {}
+  )
+
+  const visibleCategories = Object.entries(categoryCounts)
+    .sort((first, second) => second[1] - first[1])
+    .slice(0, 6)
+
+  const totalValue = listings.reduce(
+    (sum, listing) => sum + Number(listing.estimated_value || 0),
+    0
+  )
+
+  const formattedTotalValue = new Intl.NumberFormat(
+    'en-US',
+    {
+      maximumFractionDigits: 0,
+      style: 'currency',
+      currency: 'USD',
+    }
+  ).format(totalValue)
 
   useEffect(() => {
     async function fetchListings() {
@@ -149,8 +188,6 @@ export default function ListingsBrowser() {
 
         </div>
 
-        {/* EMPTY STATE */}
-
         {listings.length === 0 ? (
 
           <div className="bg-white rounded-[30px] border shadow-sm p-10 text-center">
@@ -173,6 +210,71 @@ export default function ListingsBrowser() {
           </div>
 
         ) : (
+
+          <>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+
+            <div className="bg-white border rounded-2xl px-4 py-3">
+              <p className="text-[11px] uppercase font-black text-slate-400">
+                Items
+              </p>
+              <p className="text-2xl font-black">
+                {listings.length}
+              </p>
+            </div>
+
+            <div className="bg-white border rounded-2xl px-4 py-3">
+              <p className="text-[11px] uppercase font-black text-slate-400">
+                Available
+              </p>
+              <p className="text-2xl font-black text-green-600">
+                {availableListings.length}
+              </p>
+            </div>
+
+            <div className="bg-white border rounded-2xl px-4 py-3">
+              <p className="text-[11px] uppercase font-black text-slate-400">
+                Countries
+              </p>
+              <p className="text-2xl font-black">
+                {countries.length}
+              </p>
+            </div>
+
+            <div className="bg-white border rounded-2xl px-4 py-3">
+              <p className="text-[11px] uppercase font-black text-slate-400">
+                Total Value
+              </p>
+              <p className="text-xl md:text-2xl font-black">
+                {formattedTotalValue}
+              </p>
+            </div>
+
+          </div>
+
+          {visibleCategories.length > 0 && (
+
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-2">
+
+              {visibleCategories.map(([categoryName, count]) => (
+
+                <Link
+                  href={'/?category=' + encodeURIComponent(categoryName)}
+                  key={categoryName}
+                  className="bg-white border hover:border-green-500 transition rounded-full px-4 py-2 text-xs font-black whitespace-nowrap"
+                >
+                  {categoryName}
+                  <span className="ml-2 text-slate-400">
+                    {count}
+                  </span>
+                </Link>
+
+              ))}
+
+            </div>
+
+          )}
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
 
@@ -227,6 +329,19 @@ export default function ListingsBrowser() {
                     {listing.description}
                   </p>
 
+                  {listing.desired_trade && (
+
+                    <div className="bg-slate-50 rounded-xl px-3 py-2 mb-3">
+                      <p className="text-[10px] font-black uppercase text-slate-400">
+                        Wants
+                      </p>
+                      <p className="text-xs md:text-sm font-bold text-slate-700 line-clamp-1">
+                        {listing.desired_trade}
+                      </p>
+                    </div>
+
+                  )}
+
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 
                     <div>
@@ -249,6 +364,7 @@ export default function ListingsBrowser() {
 
                       <p className="font-semibold text-[11px] md:text-sm text-slate-700 line-clamp-1">
                         {listing.city}
+                        {listing.country ? ', ' + listing.country : ''}
                       </p>
 
                     </div>
@@ -262,6 +378,8 @@ export default function ListingsBrowser() {
             ))}
 
           </div>
+
+          </>
 
         )}
 
