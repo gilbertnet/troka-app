@@ -33,10 +33,6 @@ export default function DashboardPage() {
   const [receivedOffers, setReceivedOffers] = useState<Offer[]>([])
   const [sentOffers, setSentOffers] = useState<Offer[]>([])
 
-  useEffect(() => {
-    checkUser()
-  }, [])
-
   async function checkUser() {
 
     const {
@@ -95,6 +91,10 @@ export default function DashboardPage() {
 
     setSentOffers(sentOffersData || [])
   }
+
+  useEffect(() => {
+    void Promise.resolve().then(() => checkUser())
+  }, [])
 
   async function updateOfferStatus(
     offerId: string,
@@ -196,12 +196,6 @@ async function updateListingStatus(
     )
   )
 }
-  async function signOut() {
-    await supabase.auth.signOut()
-
-    router.push('/login')
-  }
-
   if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center">

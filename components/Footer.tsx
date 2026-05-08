@@ -102,7 +102,7 @@ export default function Footer() {
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
 
           <p className="text-slate-500 text-sm">
-            © 2026 TROKA. All rights reserved.
+            &copy; 2026 TROKA. All rights reserved.
           </p>
 
           <p className="text-slate-500 text-sm">

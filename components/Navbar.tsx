@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ChevronDown, Search } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 export default function Navbar() {
@@ -20,10 +21,6 @@ export default function Navbar() {
     useState('')
 
   const router = useRouter()
-
-  useEffect(() => {
-    checkUser()
-  }, [])
 
   async function checkUser() {
 
@@ -53,6 +50,10 @@ export default function Navbar() {
     }
   }
 
+  useEffect(() => {
+    void Promise.resolve().then(() => checkUser())
+  }, [])
+
   async function handleLogout() {
 
     await supabase.auth.signOut()
@@ -73,8 +74,6 @@ export default function Navbar() {
 
       router.push('/')
 
-      window.location.reload()
-
       return
     }
 
@@ -82,8 +81,6 @@ export default function Navbar() {
       '/?search=' +
       encodeURIComponent(cleanSearch)
     )
-
-    window.location.reload()
   }
 
   return (
@@ -132,9 +129,10 @@ export default function Navbar() {
 
             <button
               type="submit"
+              aria-label="Search listings"
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white w-9 h-9 rounded-full flex items-center justify-center"
             >
-              🔍
+              <Search className="h-4 w-4" />
             </button>
 
           </form>
@@ -156,9 +154,7 @@ export default function Navbar() {
                   {firstName}
                 </span>
 
-                <span className="text-xs">
-                  ▼
-                </span>
+                <ChevronDown className="h-4 w-4" />
 
               </button>
 

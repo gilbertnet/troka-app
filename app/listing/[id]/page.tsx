@@ -18,6 +18,7 @@ interface Listing {
 
 export default function ListingDetailsPage() {
   const params = useParams()
+  const listingId = Array.isArray(params.id) ? params.id[0] : params.id
 
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
@@ -26,139 +27,86 @@ export default function ListingDetailsPage() {
   const [cashAmount, setCashAmount] = useState('')
   const [sendingOffer, setSendingOffer] = useState(false)
 
+  const cleanOfferedItem = offeredItem.trim()
+  const cleanMessage = message.trim()
+  const cleanCashAmount = Number(cashAmount)
+  const hasCashOffer = Number.isFinite(cleanCashAmount) && cleanCashAmount > 0
+  const canSendOffer =
+    cleanMessage !== '' && (cleanOfferedItem !== '' || hasCashOffer)
+
   useEffect(() => {
-    if (params.id) {
-      fetchListing()
+    async function fetchListing() {
+      if (!listingId) {
+        setLoading(false)
+        return
+      }
+
+      setLoading(true)
+
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .eq('id', listingId)
+        .single()
+
+      if (error) {
+        console.log(error)
+        setListing(null)
+        setLoading(false)
+        return
+      }
+
+      setListing(data)
+      setLoading(false)
     }
-  }, [params.id])
 
-  async function fetchListing() {
-    const { data, error } = await supabase
-      .from('listings')
-      .select('*')
-      .eq('id', params.id)
-      .single()
+    fetchListing()
+  }, [listingId])
 
-    if (error) {
-      console.log(error)
+  async function handleMakeOffer() {
+    if (!listing) {
+      alert('Listing not found')
       return
     }
-async function handleMakeOffer() {
-  setSendingOffer(true)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    if (!canSendOffer) {
+      alert('Please write a message and add an offered item or cash amount')
+      return
+    }
 
-  if (!user) {
-    alert('You must login first')
+    setSendingOffer(true)
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      alert('You must login first')
+      setSendingOffer(false)
+      return
+    }
+
+    const { error } = await supabase.from('offers').insert({
+      listing_id: listing.id,
+      sender_id: user.id,
+      message: cleanMessage,
+      offered_item: cleanOfferedItem,
+      cash_amount: hasCashOffer ? cleanCashAmount : 0,
+    })
+
     setSendingOffer(false)
-    return
+
+    if (error) {
+      alert(error.message)
+      return
+    }
+
+    alert('Offer sent successfully')
+
+    setMessage('')
+    setOfferedItem('')
+    setCashAmount('')
   }
-const cleanOfferedItem = offeredItem.trim()
-const cleanMessage = message.trim()
-const cleanCashAmount = Number(cashAmount)
-
-if (
-  cleanOfferedItem === '' &&
-  (!cleanCashAmount || cleanCashAmount <= 0)
-) {
-  alert('Please add an offered item or cash amount')
-
-  setSendingOffer(false)
-  return
-}
-
-if (cleanMessage === '') {
-  alert('Please write a message')
-
-  setSendingOffer(false)
-  return
-}
-{
-  alert('Please add an offered item or cash amount')
-
-  setSendingOffer(false)
-  return
-}
-
-if (!message.trim()) {
-  alert('Please write a message')
-
-  setSendingOffer(false)
-  return
-}
- {
-  alert('Please add an offered item or cash amount')
-
-  setSendingOffer(false)
-  return
-}
-
-if (!message.trim()) {
-  alert('Please write a message')
-
-  setSendingOffer(false)
-  return
-}
-  const { error } = await supabase.from('offers').insert({
-    listing_id: listing?.id,
-    sender_id: user!.id,
-    message,
-    offered_item: cleanOfferedItem,
-    cash_amount: cleanCashAmount,
-  })
-
-  setSendingOffer(false)
-
-  if (error) {
-  alert(error?.message || 'Unknown error')
-  return
-}
-
-  alert('Offer sent successfully')
-
-  setMessage('')
-  setOfferedItem('')
-  setCashAmount('')
-}
-    setListing(data)
-    setLoading(false)
-  }
-  async function handleMakeOffer() {
-  setSendingOffer(true)
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    alert('You must login first')
-    setSendingOffer(false)
-    return
-  }
-
-  const { error } = await supabase.from('offers').insert({
-    listing_id: listing?.id,
-    sender_id: user!.id,
-    message,
-    offered_item: offeredItem,
-    cash_amount: Number(cashAmount),
-  })
-
-  setSendingOffer(false)
-
-  if (error) {
-    alert(error.message)
-    return
-  }
-
-  alert('Offer sent successfully')
-
-  setMessage('')
-  setOfferedItem('')
-  setCashAmount('')
-}
 
   if (loading) {
     return (
@@ -246,79 +194,63 @@ if (!message.trim()) {
 
           <div className="space-y-5">
 
-  <div>
-    <label className="font-bold block mb-2">
-      Offered Item
-    </label>
+            <div>
+              <label className="font-bold block mb-2">
+                Offered Item
+              </label>
 
-    <input
-      type="text"
-      placeholder="Example: MacBook Pro"
-      className="w-full border rounded-2xl px-5 py-4"
-      value={offeredItem}
-      onChange={(e) => setOfferedItem(e.target.value)}
-    />
-  </div>
+              <input
+                type="text"
+                placeholder="Example: MacBook Pro"
+                className="w-full border rounded-2xl px-5 py-4"
+                value={offeredItem}
+                onChange={(e) => setOfferedItem(e.target.value)}
+              />
+            </div>
 
-  <div>
-    <label className="font-bold block mb-2">
-      Additional Cash
-    </label>
+            <div>
+              <label className="font-bold block mb-2">
+                Additional Cash
+              </label>
 
-    <input
-      type="number"
-      placeholder="Optional"
-      className="w-full border rounded-2xl px-5 py-4"
-      value={cashAmount}
-      onChange={(e) => setCashAmount(e.target.value)}
-    />
-  </div>
+              <input
+                type="number"
+                placeholder="Optional"
+                className="w-full border rounded-2xl px-5 py-4"
+                value={cashAmount}
+                onChange={(e) => setCashAmount(e.target.value)}
+              />
+            </div>
 
-  <div>
-    <label className="font-bold block mb-2">
-      Message
-    </label>
+            <div>
+              <label className="font-bold block mb-2">
+                Message
+              </label>
 
-    <textarea
-      placeholder="Write your proposal..."
-      className="w-full border rounded-2xl px-5 py-4 min-h-[120px]"
-      value={message}
-      onChange={(e) => setMessage(e.target.value)}
-    />
-  </div>
+              <textarea
+                placeholder="Write your proposal..."
+                className="w-full border rounded-2xl px-5 py-4 min-h-[120px]"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </div>
 
-  <button
-  onClick={handleMakeOffer}
-  disabled={
-    sendingOffer ||
-    (
-      message.trim() === '' ||
-      (
-        offeredItem.trim() === '' &&
-        (!cashAmount || Number(cashAmount) <= 0)
-      )
-    )
-  }
-  className={`
-    w-full py-5 rounded-2xl font-black text-xl transition
-    ${
-      sendingOffer ||
-      (
-        message.trim() === '' ||
-        (
-          offeredItem.trim() === '' &&
-          (!cashAmount || Number(cashAmount) <= 0)
-        )
-      )
-        ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-        : 'bg-green-500 hover:bg-green-600 text-white'
-    }
-  `}
->
-  {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
-</button>
+            <button
+              onClick={handleMakeOffer}
+              disabled={sendingOffer || !canSendOffer}
+              className={`
+                w-full py-5 rounded-2xl font-black text-xl transition
+                ${
+                  sendingOffer || !canSendOffer
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-green-500 hover:bg-green-600 text-white'
+                }
+              `}
+            >
+              {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
+            </button>
 
-</div>
+          </div>
         </div>
 
       </div>
