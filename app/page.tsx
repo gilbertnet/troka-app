@@ -1,6 +1,3 @@
-# app/page.tsx
-
-```tsx
 'use client'
 
 import Link from 'next/link'
@@ -66,13 +63,15 @@ export default function HomePage() {
       })
 
     if (search) {
+
       query = query.ilike(
-  'title',
-  '%' + search + '%'
+        'title',
+        '%' + search + '%'
       )
     }
 
     if (category) {
+
       query = query.eq(
         'category',
         category
@@ -96,12 +95,14 @@ export default function HomePage() {
   }
 
   if (loading) {
+
     return (
+
       <main className="min-h-screen bg-slate-100 px-6 py-10">
 
         <div className="max-w-7xl mx-auto">
 
-          <h1 className="text-4xl font-black mb-10">
+          <h1 className="text-4xl font-black">
             Loading listings...
           </h1>
 
@@ -128,7 +129,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-slate-500 text-lg">
-              Discover products, services and trade opportunities.
+              Discover products and trade opportunities.
             </p>
 
           </div>
@@ -168,7 +169,7 @@ export default function HomePage() {
 
         {/* EMPTY STATE */}
 
-        {listings.length === 0 && (
+        {listings.length === 0 ? (
 
           <div className="bg-white rounded-[30px] border shadow-sm p-16 text-center">
 
@@ -189,102 +190,102 @@ export default function HomePage() {
 
           </div>
 
+        ) : (
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+            {listings.map((listing) => (
+
+              <Link
+                href={'/listing/' + listing.id}
+                key={listing.id}
+                className="bg-white rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
+              >
+
+                <div className="aspect-square overflow-hidden bg-slate-200">
+
+                  <img
+                    src={listing.image_url}
+                    alt={listing.title}
+                    className="w-full h-full object-cover"
+                  />
+
+                </div>
+
+                <div className="p-6">
+
+                  <div className="flex items-center justify-between gap-3 mb-4">
+
+                    <span className="bg-slate-100 px-3 py-1 rounded-full text-xs font-bold text-slate-700">
+                      {listing.category}
+                    </span>
+
+                    <span
+                      className={
+                        'px-3 py-1 rounded-full text-xs font-bold ' +
+                        (
+                          listing.status === 'traded'
+                            ? 'bg-green-100 text-green-700'
+                            : listing.status === 'reserved'
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-blue-100 text-blue-700'
+                        )
+                      }
+                    >
+                      {listing.status}
+                    </span>
+
+                  </div>
+
+                  <h2 className="text-2xl font-black mb-3 line-clamp-1">
+                    {listing.title}
+                  </h2>
+
+                  <p className="text-slate-500 mb-5 line-clamp-2">
+                    {listing.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+
+                    <div>
+
+                      <p className="text-sm text-slate-400">
+                        Estimated Value
+                      </p>
+
+                      <p className="text-2xl font-black text-green-600">
+                        ${listing.estimated_value}
+                      </p>
+
+                    </div>
+
+                    <div className="text-right">
+
+                      <p className="text-sm text-slate-400">
+                        Location
+                      </p>
+
+                      <p className="font-semibold text-slate-700">
+                        {listing.city}
+                      </p>
+
+                      <p className="text-sm text-slate-500">
+                        {listing.country}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </Link>
+
+            ))}
+
+          </div>
+
         )}
-
-        {/* GRID */}
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-
-          {listings.map((listing) => (
-
-            <Link
-              href={'/listing/' + listing.id}
-              key={listing.id}
-              className="bg-white rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
-            >
-
-              <div className="aspect-square overflow-hidden bg-slate-200">
-
-                <img
-                  src={listing.image_url}
-                  alt={listing.title}
-                  className="w-full h-full object-cover"
-                />
-
-              </div>
-
-              <div className="p-6">
-
-                <div className="flex items-center justify-between gap-3 mb-4">
-
-                  <span className="bg-slate-100 px-3 py-1 rounded-full text-xs font-bold text-slate-700">
-                    {listing.category}
-                  </span>
-
-                  <span
-                    className={
-  'px-3 py-1 rounded-full text-xs font-bold ' +
-  (
-    listing.status === 'traded'
-      ? 'bg-green-100 text-green-700'
-      : listing.status === 'reserved'
-      ? 'bg-yellow-100 text-yellow-700'
-      : 'bg-blue-100 text-blue-700'
-  )
-}
-                  >
-                    {listing.status}
-                  </span>
-
-                </div>
-
-                <h2 className="text-2xl font-black mb-3 line-clamp-1">
-                  {listing.title}
-                </h2>
-
-                <p className="text-slate-500 mb-5 line-clamp-2">
-                  {listing.description}
-                </p>
-
-                <div className="flex items-center justify-between">
-
-                  <div>
-
-                    <p className="text-sm text-slate-400">
-                      Estimated Value
-                    </p>
-
-                    <p className="text-2xl font-black text-green-600">
-                      ${listing.estimated_value}
-                    </p>
-
-                  </div>
-
-                  <div className="text-right">
-
-                    <p className="text-sm text-slate-400">
-                      Location
-                    </p>
-
-                    <p className="font-semibold text-slate-700">
-                      {listing.city}
-                    </p>
-
-                    <p className="text-sm text-slate-500">
-                      {listing.country}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </Link>
-
-          ))}
-
-        </div>
 
       </div>
 
