@@ -174,14 +174,14 @@ export default function ListingsBrowser() {
 
         ) : (
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
 
             {listings.map((listing) => (
 
               <Link
                 href={'/listing/' + listing.id}
                 key={listing.id}
-                className="bg-white rounded-[22px] md:rounded-[30px] overflow-hidden border shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300"
+                className="bg-white rounded-2xl overflow-hidden border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition duration-300"
               >
 
                 <div className="aspect-square overflow-hidden bg-slate-200">
@@ -194,17 +194,17 @@ export default function ListingsBrowser() {
 
                 </div>
 
-                <div className="p-3 md:p-6">
+                <div className="p-3 md:p-4">
 
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2">
 
-                    <span className="bg-slate-100 px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold text-slate-700 truncate">
+                    <span className="bg-slate-100 px-2 py-1 rounded-full text-[10px] font-bold text-slate-700 truncate">
                       {listing.category}
                     </span>
 
                     <span
                       className={
-                        'px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold ' +
+                        'px-2 py-1 rounded-full text-[10px] font-bold ' +
                         (
                           listing.status === 'traded'
                             ? 'bg-green-100 text-green-700'
@@ -219,35 +219,35 @@ export default function ListingsBrowser() {
 
                   </div>
 
-                  <h2 className="text-sm md:text-2xl font-black mb-2 md:mb-3 line-clamp-1">
+                  <h2 className="text-sm md:text-lg font-black mb-2 line-clamp-1">
                     {listing.title}
                   </h2>
 
-                  <p className="text-slate-500 mb-3 md:mb-5 text-xs md:text-base line-clamp-2 hidden md:block">
+                  <p className="text-slate-500 mb-3 text-xs md:text-sm line-clamp-2 hidden md:block">
                     {listing.description}
                   </p>
 
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 
                     <div>
 
-                      <p className="text-[10px] md:text-sm text-slate-400">
+                      <p className="text-[10px] md:text-xs text-slate-400">
                         Value
                       </p>
 
-                      <p className="text-sm md:text-2xl font-black text-green-600">
+                      <p className="text-sm md:text-lg font-black text-green-600">
                         ${listing.estimated_value}
                       </p>
 
                     </div>
 
-                    <div className="text-left md:text-right">
+                    <div className="text-left sm:text-right">
 
-                      <p className="text-[10px] md:text-sm text-slate-400">
+                      <p className="text-[10px] md:text-xs text-slate-400">
                         Location
                       </p>
 
-                      <p className="font-semibold text-[11px] md:text-base text-slate-700 line-clamp-1">
+                      <p className="font-semibold text-[11px] md:text-sm text-slate-700 line-clamp-1">
                         {listing.city}
                       </p>
 
