@@ -240,33 +240,33 @@ export default function ListingsBrowser() {
   return (
     <main className="min-h-screen bg-slate-100 px-3 md:px-6 py-3 md:py-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_440px] items-start gap-3 mb-4 md:mb-6">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_560px] items-start gap-3 mb-4 md:mb-6">
           <div className="lg:flex-1">
             <h1 className="text-3xl md:text-5xl font-black leading-tight">Marketplace</h1>
             <p className="text-slate-500 text-sm md:text-base">Discover products and trade opportunities.</p>
           </div>
 
-          <div className="w-full min-h-[160px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-3 shadow-md">
+          <div className="w-full h-[132px] md:h-[124px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-3 shadow-md overflow-hidden">
             <p className="text-[11px] font-black uppercase text-emerald-100 mb-2">Nuevo Panel De Metricas</p>
 
-            <div className="space-y-2 text-sm">
-              <p className="text-[10px] uppercase font-black tracking-wide bg-black/20 inline-block px-2 py-1 rounded-md">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-1 text-xs md:text-sm">
+              <p className="text-[10px] uppercase font-black tracking-wide bg-black/20 inline-block px-2 py-1 rounded-md w-max">
                 Visible junto al titulo Marketplace
               </p>
-              <p className="font-semibold text-slate-100 truncate">
+              <p className="font-semibold text-slate-100 truncate md:col-span-2">
                 Top traded item:{' '}
                 <span className="font-black text-white">
                   {topTradedArticle ? `${topTradedArticle.title} (${topTradedArticle.count})` : 'No traded items yet'}
                 </span>
               </p>
 
-              <p className="font-semibold text-slate-100">
+              <p className="font-semibold text-slate-100 md:col-span-2">
                 Traded volume: <span className="font-black text-white">Today {tradedPeriods.day}</span> |{' '}
                 <span className="font-black text-white">Week {tradedPeriods.week}</span> |{' '}
                 <span className="font-black text-white">Month {tradedPeriods.month}</span>
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 md:gap-2 md:col-span-2">
                 {topSellers.map((seller, index) => (
                   <span key={seller.userId} className="bg-white/15 border border-white/20 rounded-full px-3 py-1 text-[11px] font-black text-white">
                     #{index + 1} {profilesById[seller.userId] || seller.userId.slice(0, 8)} · M:{seller.tradedThisMonth} · T:{seller.totalListings}
@@ -282,7 +282,7 @@ export default function ListingsBrowser() {
                   void fetchListings(true)
                 }}
                 disabled={refreshing}
-                className="mt-1 inline-flex items-center rounded-full bg-black/20 hover:bg-black/30 disabled:opacity-60 px-3 py-1 text-[11px] font-black text-white border border-white/40 transition"
+                className="md:justify-self-end inline-flex items-center rounded-full bg-black/20 hover:bg-black/30 disabled:opacity-60 px-3 py-1 text-[11px] font-black text-white border border-white/40 transition"
               >
                 {refreshing ? 'Refreshing...' : 'Refresh metrics'}
               </button>
