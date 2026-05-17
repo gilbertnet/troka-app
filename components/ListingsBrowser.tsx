@@ -246,7 +246,7 @@ export default function ListingsBrowser() {
             <p className="text-slate-500 text-sm md:text-base">Discover products and trade opportunities.</p>
           </div>
 
-          <div className="relative w-full h-[90px] md:h-[84px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
+          <div className="relative w-full min-h-[150px] md:min-h-0 md:h-[84px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-3 md:px-4 py-2 shadow-md overflow-hidden">
             <button
               type="button"
               onClick={() => {
@@ -258,25 +258,25 @@ export default function ListingsBrowser() {
               {refreshing ? 'Refreshing...' : 'Refresh metrics'}
             </button>
 
-            <div className="grid h-full grid-cols-1 md:grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-28">
-              <p className="font-semibold text-slate-100 truncate">
+            <div className="grid h-full grid-cols-1 md:grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-0 md:pr-28">
+              <p className="font-semibold text-slate-100 pr-24 md:pr-0">
                 Top traded item:{' '}
                 <span className="font-black text-white">
                   {topTradedArticle ? `${topTradedArticle.title} (${topTradedArticle.count})` : 'No traded items yet'}
                 </span>
               </p>
 
-              <p className="font-semibold text-slate-100 text-right whitespace-nowrap">
+              <p className="font-semibold text-slate-100 md:text-right whitespace-nowrap pr-24 md:pr-0">
                 Traded volume: <span className="font-black text-white">Today {tradedPeriods.day}</span> |{' '}
                 <span className="font-black text-white">Week {tradedPeriods.week}</span> |{' '}
                 <span className="font-black text-white">Month {tradedPeriods.month}</span>
               </p>
 
-              <div className="flex gap-1 md:gap-1.5 md:col-span-2 min-w-0 h-full items-stretch">
+              <div className="grid grid-cols-1 gap-1 md:flex md:gap-1.5 md:col-span-2 min-w-0 h-full items-stretch mt-1 md:mt-0">
                 {topSellers.map((seller, index) => (
                   <span
                     key={seller.userId}
-                    className="flex-1 min-w-0 h-full flex items-center justify-center text-center bg-white/20 border border-white/25 rounded-full px-2 py-1 text-[11px] md:text-xs font-black text-white truncate"
+                    className="md:flex-1 min-w-0 md:h-full flex items-center justify-center text-center bg-white/20 border border-white/25 rounded-full px-2 py-1 text-[11px] md:text-xs font-black text-white whitespace-nowrap md:truncate"
                   >
                     #{index + 1} {profilesById[seller.userId] || seller.userId.slice(0, 8)} · M:{seller.tradedThisMonth} · T:{seller.totalListings}
                   </span>
