@@ -272,9 +272,12 @@ export default function ListingsBrowser() {
                 <span className="font-black text-white">Month {tradedPeriods.month}</span>
               </p>
 
-              <div className="flex flex-wrap gap-1 md:gap-1.5 md:col-span-2">
+              <div className="flex gap-1 md:gap-1.5 md:col-span-2 min-w-0">
                 {topSellers.map((seller, index) => (
-                  <span key={seller.userId} className="bg-white/15 border border-white/20 rounded-full px-2 py-0.5 text-[10px] font-black text-white">
+                  <span
+                    key={seller.userId}
+                    className="flex-1 min-w-0 text-center bg-white/15 border border-white/20 rounded-full px-2 py-0.5 text-[10px] md:text-[11px] font-black text-white truncate"
+                  >
                     #{index + 1} {profilesById[seller.userId] || seller.userId.slice(0, 8)} · M:{seller.tradedThisMonth} · T:{seller.totalListings}
                   </span>
                 ))}
