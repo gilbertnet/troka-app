@@ -240,13 +240,13 @@ export default function ListingsBrowser() {
   return (
     <main className="min-h-screen bg-slate-100 px-3 md:px-6 py-3 md:py-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_640px] items-center gap-3 mb-4 md:mb-6">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_760px] items-center gap-3 mb-4 md:mb-6">
           <div className="lg:flex-1">
             <h1 className="text-3xl md:text-5xl font-black leading-tight">Marketplace</h1>
             <p className="text-slate-500 text-sm md:text-base">Discover products and trade opportunities.</p>
           </div>
 
-          <div className="relative w-full h-[104px] md:h-[96px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
+          <div className="relative w-full h-[90px] md:h-[84px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
             <button
               type="button"
               onClick={() => {
@@ -258,15 +258,15 @@ export default function ListingsBrowser() {
               {refreshing ? 'Refreshing...' : 'Refresh metrics'}
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight">
-              <p className="font-semibold text-slate-100 truncate md:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-28">
+              <p className="font-semibold text-slate-100 truncate">
                 Top traded item:{' '}
                 <span className="font-black text-white">
                   {topTradedArticle ? `${topTradedArticle.title} (${topTradedArticle.count})` : 'No traded items yet'}
                 </span>
               </p>
 
-              <p className="font-semibold text-slate-100 md:col-span-2">
+              <p className="font-semibold text-slate-100 text-right whitespace-nowrap">
                 Traded volume: <span className="font-black text-white">Today {tradedPeriods.day}</span> |{' '}
                 <span className="font-black text-white">Week {tradedPeriods.week}</span> |{' '}
                 <span className="font-black text-white">Month {tradedPeriods.month}</span>
