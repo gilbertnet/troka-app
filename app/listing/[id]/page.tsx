@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { useLanguage } from '@/components/LanguageProvider'
 
 interface Listing {
   id: string
@@ -18,6 +19,8 @@ interface Listing {
 
 export default function ListingDetailsPage() {
   const params = useParams()
+  const { language } = useLanguage()
+  const isEs = language === 'es'
   const listingId = Array.isArray(params.id) ? params.id[0] : params.id
 
   const [listing, setListing] = useState<Listing | null>(null)
@@ -65,12 +68,20 @@ export default function ListingDetailsPage() {
 
   async function handleMakeOffer() {
     if (!listing) {
-      alert('Listing not found')
+      alert(
+        isEs
+          ? 'Publicacion no encontrada'
+          : 'Listing not found'
+      )
       return
     }
 
     if (!canSendOffer) {
-      alert('Please write a message and add an offered item or cash amount')
+      alert(
+        isEs
+          ? 'Escribe un mensaje y agrega un articulo ofrecido o monto en efectivo'
+          : 'Please write a message and add an offered item or cash amount'
+      )
       return
     }
 
@@ -81,7 +92,11 @@ export default function ListingDetailsPage() {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      alert('You must login first')
+      alert(
+        isEs
+          ? 'Debes iniciar sesion primero'
+          : 'You must login first'
+      )
       setSendingOffer(false)
       return
     }
@@ -101,7 +116,11 @@ export default function ListingDetailsPage() {
       return
     }
 
-    alert('Offer sent successfully')
+    alert(
+      isEs
+        ? 'Oferta enviada correctamente'
+        : 'Offer sent successfully'
+    )
 
     setMessage('')
     setOfferedItem('')
@@ -112,7 +131,9 @@ export default function ListingDetailsPage() {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <p className="text-2xl font-bold">
-          Loading listing...
+          {isEs
+            ? 'Cargando publicacion...'
+            : 'Loading listing...'}
         </p>
       </main>
     )
@@ -122,7 +143,9 @@ export default function ListingDetailsPage() {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <p className="text-2xl font-bold">
-          Listing not found
+          {isEs
+            ? 'Publicacion no encontrada'
+            : 'Listing not found'}
         </p>
       </main>
     )
@@ -172,7 +195,7 @@ export default function ListingDetailsPage() {
 
             <div>
               <p className="text-sm text-slate-500">
-                Desired Trade
+                {isEs ? 'Intercambio deseado' : 'Desired Trade'}
               </p>
 
               <p className="font-bold text-lg">
@@ -182,7 +205,7 @@ export default function ListingDetailsPage() {
 
             <div>
               <p className="text-sm text-slate-500">
-                Location
+                {isEs ? 'Ubicacion' : 'Location'}
               </p>
 
               <p className="font-bold text-lg">
@@ -196,12 +219,12 @@ export default function ListingDetailsPage() {
 
             <div>
               <label className="font-bold block mb-2">
-                Offered Item
+                {isEs ? 'Articulo ofrecido' : 'Offered Item'}
               </label>
 
               <input
                 type="text"
-                placeholder="Example: MacBook Pro"
+                placeholder={isEs ? 'Ejemplo: MacBook Pro' : 'Example: MacBook Pro'}
                 className="w-full border rounded-2xl px-5 py-4"
                 value={offeredItem}
                 onChange={(e) => setOfferedItem(e.target.value)}
@@ -210,12 +233,12 @@ export default function ListingDetailsPage() {
 
             <div>
               <label className="font-bold block mb-2">
-                Additional Cash
+                {isEs ? 'Efectivo adicional' : 'Additional Cash'}
               </label>
 
               <input
                 type="number"
-                placeholder="Optional"
+                placeholder={isEs ? 'Opcional' : 'Optional'}
                 className="w-full border rounded-2xl px-5 py-4"
                 value={cashAmount}
                 onChange={(e) => setCashAmount(e.target.value)}
@@ -224,11 +247,11 @@ export default function ListingDetailsPage() {
 
             <div>
               <label className="font-bold block mb-2">
-                Message
+                {isEs ? 'Mensaje' : 'Message'}
               </label>
 
               <textarea
-                placeholder="Write your proposal..."
+                placeholder={isEs ? 'Escribe tu propuesta...' : 'Write your proposal...'}
                 className="w-full border rounded-2xl px-5 py-4 min-h-[120px]"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -247,7 +270,13 @@ export default function ListingDetailsPage() {
                 }
               `}
             >
-              {sendingOffer ? 'Sending Offer...' : 'Make Offer'}
+              {sendingOffer
+                ? isEs
+                  ? 'Enviando oferta...'
+                  : 'Sending Offer...'
+                : isEs
+                ? 'Hacer oferta'
+                : 'Make Offer'}
             </button>
 
           </div>

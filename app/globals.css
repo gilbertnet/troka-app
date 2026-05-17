@@ -24,3 +24,170 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.troka-memory-mark {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  background:
+    radial-gradient(circle at 15% 30%, rgba(16, 185, 129, 0.32), transparent 48%),
+    radial-gradient(circle at 78% 70%, rgba(15, 118, 110, 0.26), transparent 52%),
+    linear-gradient(120deg, #0f172a, #111827 45%, #14532d 100%);
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.22),
+    inset 0 0 22px rgba(16, 185, 129, 0.2);
+}
+
+.troka-memory-mark::after {
+  content: '';
+  position: absolute;
+  inset: -140% -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 62%
+  );
+  animation: troka-sheen 4.8s ease-in-out infinite;
+}
+
+.troka-memory-word {
+  position: relative;
+  z-index: 1;
+  color: #f8fafc;
+  text-shadow:
+    0 0 10px rgba(16, 185, 129, 0.5),
+    0 0 24px rgba(16, 185, 129, 0.3);
+  animation: troka-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes troka-sheen {
+  0% {
+    transform: translateX(-35%) translateY(0) rotate(12deg);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  48% {
+    transform: translateX(30%) translateY(-4%) rotate(12deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(70%) translateY(-6%) rotate(12deg);
+    opacity: 0;
+  }
+}
+
+@keyframes troka-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+    letter-spacing: 0.22em;
+  }
+  50% {
+    transform: translateY(-1px);
+    letter-spacing: 0.26em;
+  }
+}
+
+.troka-header-logo {
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(16, 185, 129, 0.38);
+  background:
+    radial-gradient(circle at 16% 30%, rgba(16, 185, 129, 0.28), transparent 52%),
+    radial-gradient(circle at 80% 70%, rgba(15, 118, 110, 0.2), transparent 55%),
+    linear-gradient(120deg, #111827, #0f172a 42%, #14532d 100%);
+  box-shadow:
+    0 6px 18px rgba(15, 23, 42, 0.2),
+    inset 0 0 18px rgba(16, 185, 129, 0.22);
+}
+
+.troka-header-logo::after {
+  content: '';
+  position: absolute;
+  inset: -120% -45%;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 62%
+  );
+  animation: troka-sheen 5.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.troka-header-word {
+  position: relative;
+  z-index: 1;
+  color: #f8fafc;
+  text-shadow:
+    0 0 10px rgba(16, 185, 129, 0.4),
+    0 0 20px rgba(16, 185, 129, 0.25);
+  animation: troka-breathe 3.2s ease-in-out infinite;
+}
+
+.troka-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  margin-top: -3.5px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(16, 185, 129, 0.9) 55%, rgba(16, 185, 129, 0) 100%);
+  opacity: 0;
+  transform: translate(0, 0) scale(0.7);
+  pointer-events: none;
+}
+
+.troka-header-logo--explode .troka-spark {
+  animation: troka-burst 0.42s ease-out forwards;
+}
+
+.troka-header-logo--explode .troka-header-word {
+  animation: troka-pulse-pop 0.42s ease-out forwards;
+}
+
+.troka-header-logo--explode::after {
+  animation: none;
+  opacity: 0;
+}
+
+.troka-spark-1 { --tx: 52px; --ty: -10px; animation-delay: 0.01s; }
+.troka-spark-2 { --tx: 38px; --ty: -36px; animation-delay: 0.02s; }
+.troka-spark-3 { --tx: -26px; --ty: -34px; animation-delay: 0.03s; }
+.troka-spark-4 { --tx: -56px; --ty: -2px; animation-delay: 0.01s; }
+.troka-spark-5 { --tx: -18px; --ty: 32px; animation-delay: 0.02s; }
+.troka-spark-6 { --tx: 34px; --ty: 30px; animation-delay: 0.03s; }
+
+@keyframes troka-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(1.25);
+  }
+}
+
+@keyframes troka-pulse-pop {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  38% {
+    transform: scale(1.08);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}

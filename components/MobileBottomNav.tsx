@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, LayoutDashboard, Plus, Search, User } from 'lucide-react'
+import { useLanguage } from '@/components/LanguageProvider'
 
 const navItems = [
   {
@@ -34,6 +35,52 @@ const navItems = [
 
 export default function MobileBottomNav() {
   const pathname = usePathname()
+  const { language } = useLanguage()
+
+  const labelsByLanguage = {
+    en: {
+      Home: 'Home',
+      Search: 'Search',
+      Create: 'Create',
+      Dashboard: 'Dashboard',
+      Login: 'Login',
+    },
+    es: {
+      Home: 'Inicio',
+      Search: 'Buscar',
+      Create: 'Crear',
+      Dashboard: 'Panel',
+      Login: 'Entrar',
+    },
+    pt: {
+      Home: 'In\u00edcio',
+      Search: 'Buscar',
+      Create: 'Criar',
+      Dashboard: 'Painel',
+      Login: 'Entrar',
+    },
+    fr: {
+      Home: 'Accueil',
+      Search: 'Recherche',
+      Create: 'Cr\u00e9er',
+      Dashboard: 'Tableau',
+      Login: 'Connexion',
+    },
+    de: {
+      Home: 'Start',
+      Search: 'Suche',
+      Create: 'Erstellen',
+      Dashboard: 'Dashboard',
+      Login: 'Login',
+    },
+    it: {
+      Home: 'Home',
+      Search: 'Cerca',
+      Create: 'Crea',
+      Dashboard: 'Pannello',
+      Login: 'Accedi',
+    },
+  } as const
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 border-t bg-white/95 backdrop-blur md:hidden">
@@ -62,7 +109,13 @@ export default function MobileBottomNav() {
             >
               <Icon className="h-5 w-5" />
               <span>
-                {item.label}
+                {
+                  labelsByLanguage[
+                    language
+                  ][
+                    item.label as keyof (typeof labelsByLanguage)['en']
+                  ]
+                }
               </span>
             </Link>
           )

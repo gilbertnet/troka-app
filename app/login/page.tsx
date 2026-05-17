@@ -3,9 +3,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from '@/lib/auth'
+import { useLanguage } from '@/components/LanguageProvider'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { language } = useLanguage()
+  const isEs = language === 'es'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,18 +35,20 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white p-10 rounded-[40px] shadow-xl border">
 
         <h1 className="text-5xl font-black mb-3">
-          Welcome Back
+          {isEs ? 'Bienvenido de nuevo' : 'Welcome Back'}
         </h1>
 
         <p className="text-slate-500 mb-8 text-lg">
-          Login to continue using Troka.
+          {isEs
+            ? 'Inicia sesi\u00f3n para seguir usando Troka.'
+            : 'Login to continue using Troka.'}
         </p>
 
         <div className="space-y-5">
 
           <input
             type="email"
-            placeholder="Email"
+            placeholder={isEs ? 'Correo' : 'Email'}
             className="w-full border rounded-2xl px-5 py-4"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -51,7 +56,7 @@ export default function LoginPage() {
 
           <input
             type="password"
-            placeholder="Password"
+            placeholder={isEs ? 'Contrase\u00f1a' : 'Password'}
             className="w-full border rounded-2xl px-5 py-4"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -62,7 +67,13 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-green-500 text-white py-4 rounded-2xl font-black text-lg"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading
+              ? isEs
+                ? 'Iniciando sesi\u00f3n...'
+                : 'Logging in...'
+              : isEs
+              ? 'Entrar'
+              : 'Login'}
           </button>
 
         </div>

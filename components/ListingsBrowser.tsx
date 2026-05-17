@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Plus } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { useLanguage } from '@/components/LanguageProvider'
 
 interface Listing {
   id: string
@@ -55,8 +56,160 @@ function getPeriodStart(now: Date, period: 'day' | 'week' | 'month') {
 
 export default function ListingsBrowser() {
   const searchParams = useSearchParams()
+  const {
+    language,
+    localizeCategory,
+    localizeStatus,
+  } = useLanguage()
   const search = searchParams.get('search') || ''
   const category = searchParams.get('category') || ''
+  const texts = {
+    en: {
+      loading: 'Loading listings...',
+      discover: 'Discover products and trade opportunities.',
+      refreshing: 'Refreshing...',
+      refresh: 'Refresh metrics',
+      topItem: 'Top traded item:',
+      noTraded: 'No traded items yet',
+      volume: 'Traded volume:',
+      today: 'Today',
+      week: 'Week',
+      month: 'Month',
+      noRanking: 'No seller ranking available yet.',
+      search: 'Search:',
+      clear: 'Clear',
+      noFound: 'No listings found',
+      tryOther: 'Try another category or search term.',
+      viewAll: 'View All Listings',
+      items: 'ITEMS',
+      available: 'AVAILABLE',
+      countries: 'COUNTRIES',
+      value: 'VALUE',
+      valueLabel: 'Value',
+      location: 'Location',
+    },
+    es: {
+      loading: 'Cargando publicaciones...',
+      discover: 'Descubre productos y oportunidades de intercambio.',
+      refreshing: 'Actualizando...',
+      refresh: 'Actualizar metricas',
+      topItem: 'Articulo mas intercambiado:',
+      noTraded: 'Aun no hay intercambios',
+      volume: 'Volumen intercambiado:',
+      today: 'Hoy',
+      week: 'Semana',
+      month: 'Mes',
+      noRanking: 'Aun no hay ranking de vendedores.',
+      search: 'Busqueda:',
+      clear: 'Limpiar',
+      noFound: 'No se encontraron publicaciones',
+      tryOther: 'Prueba otra categoria o termino de busqueda.',
+      viewAll: 'Ver todas las publicaciones',
+      items: 'PUBLICACIONES',
+      available: 'DISPONIBLES',
+      countries: 'PAISES',
+      value: 'VALOR',
+      valueLabel: 'Valor',
+      location: 'Ubicacion',
+    },
+    pt: {
+      loading: 'Carregando anuncios...',
+      discover: 'Descubra produtos e oportunidades de troca.',
+      refreshing: 'Atualizando...',
+      refresh: 'Atualizar metricas',
+      topItem: 'Item mais trocado:',
+      noTraded: 'Ainda sem trocas',
+      volume: 'Volume trocado:',
+      today: 'Hoje',
+      week: 'Semana',
+      month: 'Mes',
+      noRanking: 'Ainda nao ha ranking de vendedores.',
+      search: 'Busca:',
+      clear: 'Limpar',
+      noFound: 'Nenhum anuncio encontrado',
+      tryOther: 'Tente outra categoria ou termo de busca.',
+      viewAll: 'Ver todos os anuncios',
+      items: 'ITENS',
+      available: 'DISPONIVEIS',
+      countries: 'PAISES',
+      value: 'VALOR',
+      valueLabel: 'Valor',
+      location: 'Localizacao',
+    },
+    fr: {
+      loading: 'Chargement des annonces...',
+      discover: 'Decouvrez des produits et des opportunites de troc.',
+      refreshing: 'Actualisation...',
+      refresh: 'Actualiser les metriques',
+      topItem: 'Article le plus echange:',
+      noTraded: 'Aucun echange pour le moment',
+      volume: 'Volume echange:',
+      today: "Aujourd'hui",
+      week: 'Semaine',
+      month: 'Mois',
+      noRanking: 'Aucun classement vendeur pour le moment.',
+      search: 'Recherche:',
+      clear: 'Effacer',
+      noFound: 'Aucune annonce trouvee',
+      tryOther: 'Essayez une autre categorie ou recherche.',
+      viewAll: 'Voir toutes les annonces',
+      items: 'ARTICLES',
+      available: 'DISPONIBLES',
+      countries: 'PAYS',
+      value: 'VALEUR',
+      valueLabel: 'Valeur',
+      location: 'Localisation',
+    },
+    de: {
+      loading: 'Anzeigen werden geladen...',
+      discover: 'Entdecken Sie Produkte und Tauschmoglichkeiten.',
+      refreshing: 'Aktualisieren...',
+      refresh: 'Metriken aktualisieren',
+      topItem: 'Meistgetauschter Artikel:',
+      noTraded: 'Noch keine Tauschaktionen',
+      volume: 'Getauschtes Volumen:',
+      today: 'Heute',
+      week: 'Woche',
+      month: 'Monat',
+      noRanking: 'Noch kein Verkaufer-Ranking verfugbar.',
+      search: 'Suche:',
+      clear: 'Leeren',
+      noFound: 'Keine Anzeigen gefunden',
+      tryOther: 'Versuchen Sie eine andere Kategorie oder Suche.',
+      viewAll: 'Alle Anzeigen anzeigen',
+      items: 'ARTIKEL',
+      available: 'VERFUGBAR',
+      countries: 'LANDER',
+      value: 'WERT',
+      valueLabel: 'Wert',
+      location: 'Standort',
+    },
+    it: {
+      loading: 'Caricamento annunci...',
+      discover: 'Scopri prodotti e opportunita di scambio.',
+      refreshing: 'Aggiornamento...',
+      refresh: 'Aggiorna metriche',
+      topItem: 'Articolo piu scambiato:',
+      noTraded: 'Nessuno scambio per ora',
+      volume: 'Volume scambiato:',
+      today: 'Oggi',
+      week: 'Settimana',
+      month: 'Mese',
+      noRanking: 'Nessuna classifica venditori disponibile.',
+      search: 'Ricerca:',
+      clear: 'Pulisci',
+      noFound: 'Nessun annuncio trovato',
+      tryOther: 'Prova un altra categoria o ricerca.',
+      viewAll: 'Vedi tutti gli annunci',
+      items: 'ARTICOLI',
+      available: 'DISPONIBILI',
+      countries: 'PAESI',
+      value: 'VALORE',
+      valueLabel: 'Valore',
+      location: 'Posizione',
+    },
+  } as const
+  const tx = texts[language]
 
   const [listings, setListings] = useState<Listing[]>([])
   const [profilesById, setProfilesById] = useState<Record<string, string>>({})
@@ -231,7 +384,9 @@ export default function ListingsBrowser() {
     return (
       <main className="min-h-screen bg-slate-100 px-4 py-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-black">Loading listings...</h1>
+          <h1 className="text-3xl font-black">
+            {tx.loading}
+          </h1>
         </div>
       </main>
     )
@@ -242,8 +397,12 @@ export default function ListingsBrowser() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_760px] items-center gap-3 mb-4 md:mb-6">
           <div className="lg:flex-1">
-            <h1 className="text-3xl md:text-5xl font-black leading-tight">Marketplace</h1>
-            <p className="text-slate-500 text-sm md:text-base">Discover products and trade opportunities.</p>
+            <h1 className="text-3xl md:text-5xl font-black leading-tight">
+              Marketplace
+            </h1>
+            <p className="text-slate-500 text-sm md:text-base">
+              {tx.discover}
+            </p>
           </div>
 
           <div className="relative w-full min-h-[150px] md:min-h-0 md:h-[84px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-3 md:px-4 py-2 shadow-md overflow-hidden">
@@ -255,21 +414,32 @@ export default function ListingsBrowser() {
               disabled={refreshing}
               className="absolute top-2 right-3 inline-flex items-center rounded-full bg-black/20 hover:bg-black/30 disabled:opacity-60 px-2.5 py-0.5 text-[10px] font-black text-white border border-white/40 transition"
             >
-              {refreshing ? 'Refreshing...' : 'Refresh metrics'}
+              {refreshing ? tx.refreshing : tx.refresh}
             </button>
 
             <div className="grid h-full grid-cols-1 md:grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-0 md:pr-28">
               <p className="font-semibold text-slate-100 pr-24 md:pr-0">
-                Top traded item:{' '}
+                {tx.topItem}{' '}
                 <span className="font-black text-white">
-                  {topTradedArticle ? `${topTradedArticle.title} (${topTradedArticle.count})` : 'No traded items yet'}
+                  {topTradedArticle
+                    ? `${topTradedArticle.title} (${topTradedArticle.count})`
+                    : tx.noTraded}
                 </span>
               </p>
 
               <p className="font-semibold text-slate-100 md:text-right whitespace-nowrap pr-24 md:pr-0">
-                Traded volume: <span className="font-black text-white">Today {tradedPeriods.day}</span> |{' '}
-                <span className="font-black text-white">Week {tradedPeriods.week}</span> |{' '}
-                <span className="font-black text-white">Month {tradedPeriods.month}</span>
+                {tx.volume}{' '}
+                <span className="font-black text-white">
+                  {tx.today} {tradedPeriods.day}
+                </span>{' '}
+                |{' '}
+                <span className="font-black text-white">
+                  {tx.week} {tradedPeriods.week}
+                </span>{' '}
+                |{' '}
+                <span className="font-black text-white">
+                  {tx.month} {tradedPeriods.month}
+                </span>
               </p>
 
               <div className="grid grid-cols-1 gap-1 md:flex md:gap-1.5 md:col-span-2 min-w-0 h-full items-stretch mt-1 md:mt-0">
@@ -282,7 +452,9 @@ export default function ListingsBrowser() {
                   </span>
                 ))}
                 {topSellers.length === 0 && (
-                  <span className="text-xs font-semibold text-slate-300">No seller ranking available yet.</span>
+                  <span className="text-xs font-semibold text-slate-300">
+                    {tx.noRanking}
+                  </span>
                 )}
               </div>
             </div>
@@ -291,45 +463,42 @@ export default function ListingsBrowser() {
 
         {(search || category) && (
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            {search && <div className="bg-white border rounded-full px-3 py-1.5 text-xs font-semibold">Search: {search}</div>}
-            {category && <div className="bg-green-500 text-white rounded-full px-3 py-1.5 text-xs font-semibold">{category}</div>}
+            {search && <div className="bg-white border rounded-full px-3 py-1.5 text-xs font-semibold">{tx.search} {search}</div>}
+            {category && <div className="bg-green-500 text-white rounded-full px-3 py-1.5 text-xs font-semibold">{localizeCategory(category)}</div>}
             <Link href="/" className="bg-black text-white px-3 py-1.5 rounded-full text-xs font-bold">
-              Clear
+              {tx.clear}
             </Link>
           </div>
         )}
 
         {listings.length === 0 ? (
           <div className="bg-white rounded-[30px] border shadow-sm p-10 text-center">
-            <h2 className="text-2xl font-black mb-4">No listings found</h2>
-            <p className="text-slate-500 mb-8">Try another category or search term.</p>
+            <h2 className="text-2xl font-black mb-4">
+              {tx.noFound}
+            </h2>
+            <p className="text-slate-500 mb-8">
+              {tx.tryOther}
+            </p>
             <Link href="/" className="bg-green-500 hover:bg-green-600 transition text-white px-6 py-4 rounded-2xl font-bold">
-              View All Listings
+              {tx.viewAll}
             </Link>
           </div>
         ) : (
           <>
-            <div className="flex flex-wrap gap-2 mb-3">
-              <div className="bg-white border-2 border-slate-300 rounded-full px-3 py-1.5 text-xs font-black">ITEMS {listings.length}</div>
-              <div className="bg-white border-2 border-green-300 rounded-full px-3 py-1.5 text-xs font-black text-green-700">
-                AVAILABLE {availableListings.length}
-              </div>
-              <div className="bg-white border-2 border-slate-300 rounded-full px-3 py-1.5 text-xs font-black">COUNTRIES {countries.length}</div>
-              <div className="bg-white border-2 border-slate-300 rounded-full px-3 py-1.5 text-xs font-black">VALUE {formattedTotalValue}</div>
-            </div>
-
             {visibleCategories.length > 0 && (
-              <div className="flex gap-2 overflow-x-auto pb-2 mb-2">
-                {visibleCategories.map(([categoryName, count]) => (
-                  <Link
-                    href={'/?category=' + encodeURIComponent(categoryName)}
-                    key={categoryName}
-                    className="bg-white border hover:border-green-500 transition rounded-full px-3 py-1.5 text-[11px] md:text-xs font-black whitespace-nowrap"
-                  >
-                    {categoryName}
-                    <span className="ml-2 text-slate-400">{count}</span>
-                  </Link>
-                ))}
+              <div className="mb-2 flex flex-col gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {visibleCategories.map(([categoryName, count]) => (
+                    <Link
+                      href={'/?category=' + encodeURIComponent(categoryName)}
+                      key={categoryName}
+                      className="bg-white border hover:border-green-500 transition rounded-full px-3 py-1.5 text-[11px] md:text-xs font-black whitespace-nowrap"
+                    >
+                      {localizeCategory(categoryName)}
+                      <span className="ml-2 text-slate-400">{count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -347,7 +516,7 @@ export default function ListingsBrowser() {
                   <div className="p-2 md:p-3">
                     <div className="flex items-center justify-between gap-1.5 md:gap-2 mb-1.5">
                       <span className="bg-slate-100 px-2 py-1 rounded-full text-[9px] md:text-[10px] font-bold text-slate-700 truncate">
-                        {listing.category}
+                        {localizeCategory(listing.category)}
                       </span>
 
                       <span
@@ -360,7 +529,7 @@ export default function ListingsBrowser() {
                               : 'bg-blue-100 text-blue-700')
                         }
                       >
-                        {listing.status}
+                        {localizeStatus(listing.status)}
                       </span>
                     </div>
 
@@ -370,12 +539,12 @@ export default function ListingsBrowser() {
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 md:gap-2">
                       <div>
-                        <p className="hidden md:block text-xs text-slate-400">Value</p>
+                        <p className="hidden md:block text-xs text-slate-400">{tx.valueLabel}</p>
                         <p className="text-sm md:text-lg font-black text-green-600">${listing.estimated_value}</p>
                       </div>
 
                       <div className="text-left sm:text-right">
-                        <p className="hidden md:block text-xs text-slate-400">Location</p>
+                        <p className="hidden md:block text-xs text-slate-400">{tx.location}</p>
                         <p className="font-semibold text-[11px] md:text-sm text-slate-700 line-clamp-1">
                           {listing.city}
                           <span className="hidden md:inline">{listing.country ? ', ' + listing.country : ''}</span>

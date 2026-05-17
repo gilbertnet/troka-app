@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Country, State, City } from 'country-state-city'
+import { useLanguage } from '@/components/LanguageProvider'
 const categories = [
   'Electronics',
   'Vehicles',
@@ -20,6 +21,8 @@ const categories = [
 ]
 
 export default function CreateListingPage() {
+  const { language, localizeCategory } = useLanguage()
+  const isEs = language === 'es'
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
@@ -39,7 +42,11 @@ export default function CreateListingPage() {
     } = await supabase.auth.getUser()
 //alert(JSON.stringify(user))
     if (!user) {
-      alert('You must login first')
+      alert(
+        isEs
+          ? 'Debes iniciar sesion primero'
+          : 'You must login first'
+      )
       return
     }
 let imageUrl = ''
@@ -81,7 +88,11 @@ if (image) {
       return
     }
 
-    alert('Listing created successfully')
+    alert(
+      isEs
+        ? 'Publicacion creada correctamente'
+        : 'Listing created successfully'
+    )
     setTitle('')
     setDescription('')
     setCategory('')
@@ -109,18 +120,20 @@ if (image) {
       <div className="max-w-3xl mx-auto bg-white p-10 rounded-[40px] shadow-xl border">
 
         <h1 className="text-5xl font-black mb-3">
-          Create Listing
+          {isEs ? 'Crear publicacion' : 'Create Listing'}
         </h1>
 
         <p className="text-slate-500 text-lg mb-10">
-          Publish an item for trade on Troka.
+          {isEs
+            ? 'Publica un articulo para intercambiar en Troka.'
+            : 'Publish an item for trade on Troka.'}
         </p>
 
         <div className="space-y-5">
 
          <div>
   <label className="font-bold block mb-2">
-    Listing Title
+    {isEs ? 'Titulo de la publicacion' : 'Listing Title'}
   </label>
 
   <input
@@ -132,14 +145,16 @@ if (image) {
   />
 
   <p className="text-sm text-slate-500 mt-2">
-    Write a short and clear title for your item.
+    {isEs
+      ? 'Escribe un titulo corto y claro para tu articulo.'
+      : 'Write a short and clear title for your item.'}
   </p>
 </div>
           
 
           <div>
   <label className="font-bold block mb-2">
-    Category
+    {isEs ? 'Categoria' : 'Category'}
   </label>
 
   <select
@@ -147,23 +162,25 @@ if (image) {
     value={category}
     onChange={(e) => setCategory(e.target.value)}
   >
-    <option value="">Select category</option>
+    <option value="">{isEs ? 'Selecciona categoria' : 'Select category'}</option>
 
     {categories.map((item) => (
       <option key={item} value={item}>
-        {item}
+        {localizeCategory(item)}
       </option>
     ))}
   </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Choose the category that best describes your item.
+    {isEs
+      ? 'Elige la categoria que mejor describe tu articulo.'
+      : 'Choose the category that best describes your item.'}
   </p>
 </div>
 
           <div>
   <label className="font-bold block mb-2">
-    Description
+    {isEs ? 'Descripcion' : 'Description'}
   </label>
 
   <textarea
@@ -174,13 +191,15 @@ if (image) {
   />
 
   <p className="text-sm text-slate-500 mt-2">
-    Include condition, included items, and important details.
+    {isEs
+      ? 'Incluye estado, accesorios y detalles importantes.'
+      : 'Include condition, included items, and important details.'}
   </p>
 </div>
 
          <div>
   <label className="font-bold block mb-2">
-    Desired Trade
+    {isEs ? 'Intercambio deseado' : 'Desired Trade'}
   </label>
 
   <input
@@ -192,13 +211,15 @@ if (image) {
   />
 
   <p className="text-sm text-slate-500 mt-2">
-    Explain what type of item or exchange you are looking for.
+    {isEs
+      ? 'Explica que tipo de articulo o intercambio buscas.'
+      : 'Explain what type of item or exchange you are looking for.'}
   </p>
 </div>
 
           <div>
   <label className="font-bold block mb-2">
-    Estimated Value
+    {isEs ? 'Valor estimado' : 'Estimated Value'}
   </label>
 
   <input
@@ -210,12 +231,14 @@ if (image) {
   />
 
   <p className="text-sm text-slate-500 mt-2">
-    Approximate market value of your item in USD.
+    {isEs
+      ? 'Valor aproximado de mercado en USD.'
+      : 'Approximate market value of your item in USD.'}
   </p>
 </div>
 <div>
   <label className="font-bold block mb-2">
-    Country
+    {isEs ? 'Pais' : 'Country'}
   </label>
 
   <select
@@ -243,12 +266,12 @@ if (image) {
   </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Select your country.
+    {isEs ? 'Selecciona tu pais.' : 'Select your country.'}
   </p>
 </div>
 <div>
   <label className="font-bold block mb-2">
-    State / Province
+    {isEs ? 'Estado / Provincia' : 'State / Province'}
   </label>
 
   <select
@@ -257,7 +280,9 @@ if (image) {
     onChange={(e) => setStateCode(e.target.value)}
   >
     <option value="">
-      Select state or province
+      {isEs
+        ? 'Selecciona estado o provincia'
+        : 'Select state or province'}
     </option>
 
     {State.getStatesOfCountry(countryCode).map((state) => (
@@ -271,12 +296,14 @@ if (image) {
   </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Select your province or state.
+    {isEs
+      ? 'Selecciona tu provincia o estado.'
+      : 'Select your province or state.'}
   </p>
 </div>
           <div>
   <label className="font-bold block mb-2">
-    City
+    {isEs ? 'Ciudad' : 'City'}
   </label>
 
   <select
@@ -285,7 +312,7 @@ if (image) {
     onChange={(e) => setCity(e.target.value)}
   >
     <option value="">
-      Select city
+      {isEs ? 'Selecciona ciudad' : 'Select city'}
     </option>
 
     {City.getCitiesOfCountry(countryCode)?.map((cityItem) => (
@@ -299,12 +326,14 @@ if (image) {
   </select>
 
   <p className="text-sm text-slate-500 mt-2">
-    Select the city where the item is located.
+    {isEs
+      ? 'Selecciona la ciudad donde esta el articulo.'
+      : 'Select the city where the item is located.'}
   </p>
 </div>
 <div>
   <label className="font-bold block mb-2">
-    Listing Image
+    {isEs ? 'Imagen de la publicacion' : 'Listing Image'}
   </label>
 
   <input
@@ -319,14 +348,18 @@ if (image) {
   />
 
   <p className="text-sm text-slate-500 mt-2">
-    Upload a clear photo of your item.
+    {isEs
+      ? 'Sube una foto clara de tu articulo.'
+      : 'Upload a clear photo of your item.'}
   </p>
  </div>
           <button
             onClick={createListingNow}
             className="w-full bg-green-500 text-white py-5 rounded-2xl font-black text-lg"
           >
-            Publish Listing
+            {isEs
+              ? 'Publicar publicacion'
+              : 'Publish Listing'}
           </button>
 
         </div>

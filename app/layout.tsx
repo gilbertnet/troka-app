@@ -4,6 +4,9 @@ import "./globals.css";
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import MobileBottomNav from '@/components/MobileBottomNav'
+import { LanguageProvider } from '@/components/LanguageProvider'
+import ScrollResetOnLoad from '@/components/ScrollResetOnLoad'
+import ScrollToTopOnRouteChange from '@/components/ScrollToTopOnRouteChange'
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,6 +35,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col pb-20 md:pb-0">
 
+<LanguageProvider>
+
+  <ScrollResetOnLoad />
+  <ScrollToTopOnRouteChange />
+
   <Navbar />
 
 {children}
@@ -39,6 +47,8 @@ export default function RootLayout({
 <Footer />
 
 <MobileBottomNav />
+
+</LanguageProvider>
 
 </body>
     </html>
