@@ -1,0 +1,9 @@
+Accesos de vendedores de prueba
+Contraseña de todos: Rosa1234
+
+seller.maria.mx@troka.test
+seller.javier.co@troka.test
+seller.camila.ar@troka.test
+seller.daniel.es@troka.test
+seller.sofia.us@troka.test
+seller.ana.pe@troka.test
