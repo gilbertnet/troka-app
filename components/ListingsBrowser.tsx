@@ -258,7 +258,7 @@ export default function ListingsBrowser() {
               {refreshing ? 'Refreshing...' : 'Refresh metrics'}
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-28">
+            <div className="grid h-full grid-cols-1 md:grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight pr-28">
               <p className="font-semibold text-slate-100 truncate">
                 Top traded item:{' '}
                 <span className="font-black text-white">
@@ -272,11 +272,11 @@ export default function ListingsBrowser() {
                 <span className="font-black text-white">Month {tradedPeriods.month}</span>
               </p>
 
-              <div className="flex gap-1 md:gap-1.5 md:col-span-2 min-w-0">
+              <div className="flex gap-1 md:gap-1.5 md:col-span-2 min-w-0 h-full items-stretch">
                 {topSellers.map((seller, index) => (
                   <span
                     key={seller.userId}
-                    className="flex-1 min-w-0 text-center bg-white/15 border border-white/20 rounded-full px-2 py-0.5 text-[10px] md:text-[11px] font-black text-white truncate"
+                    className="flex-1 min-w-0 h-full flex items-center justify-center text-center bg-white/20 border border-white/25 rounded-full px-2 py-1 text-[11px] md:text-xs font-black text-white truncate"
                   >
                     #{index + 1} {profilesById[seller.userId] || seller.userId.slice(0, 8)} · M:{seller.tradedThisMonth} · T:{seller.totalListings}
                   </span>
