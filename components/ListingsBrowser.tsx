@@ -336,12 +336,12 @@ export default function ListingsBrowser() {
                   key={listing.id}
                   className="bg-white rounded-xl md:rounded-2xl overflow-hidden border shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition duration-300"
                 >
-                  <div className="aspect-square overflow-hidden bg-slate-200">
+                  <div className="aspect-[4/3] overflow-hidden bg-slate-200">
                     <img src={listing.image_url} alt={listing.title} className="w-full h-full object-cover" />
                   </div>
 
-                  <div className="p-2.5 md:p-4">
-                    <div className="flex items-center justify-between gap-1.5 md:gap-2 mb-2">
+                  <div className="p-2 md:p-3">
+                    <div className="flex items-center justify-between gap-1.5 md:gap-2 mb-1.5">
                       <span className="bg-slate-100 px-2 py-1 rounded-full text-[9px] md:text-[10px] font-bold text-slate-700 truncate">
                         {listing.category}
                       </span>
@@ -360,16 +360,9 @@ export default function ListingsBrowser() {
                       </span>
                     </div>
 
-                    <h2 className="text-[13px] md:text-lg font-black mb-1.5 md:mb-2 line-clamp-1">{listing.title}</h2>
+                    <h2 className="text-[13px] md:text-base font-black mb-1 md:mb-1.5 line-clamp-1">{listing.title}</h2>
 
-                    <p className="text-slate-500 mb-3 text-xs md:text-sm line-clamp-2 hidden md:block">{listing.description}</p>
-
-                    {listing.desired_trade && (
-                      <div className="hidden md:block bg-slate-50 rounded-xl px-3 py-2 mb-3">
-                        <p className="text-[10px] font-black uppercase text-slate-400">Wants</p>
-                        <p className="text-xs md:text-sm font-bold text-slate-700 line-clamp-1">{listing.desired_trade}</p>
-                      </div>
-                    )}
+                    <p className="text-slate-500 mb-2 text-xs md:text-sm line-clamp-1 hidden md:block">{listing.description}</p>
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 md:gap-2">
                       <div>
