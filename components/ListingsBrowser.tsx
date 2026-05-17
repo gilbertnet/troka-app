@@ -246,7 +246,18 @@ export default function ListingsBrowser() {
             <p className="text-slate-500 text-sm md:text-base">Discover products and trade opportunities.</p>
           </div>
 
-          <div className="w-full h-[104px] md:h-[96px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
+          <div className="relative w-full h-[104px] md:h-[96px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
+            <button
+              type="button"
+              onClick={() => {
+                void fetchListings(true)
+              }}
+              disabled={refreshing}
+              className="absolute top-2 right-3 inline-flex items-center rounded-full bg-black/20 hover:bg-black/30 disabled:opacity-60 px-2.5 py-0.5 text-[10px] font-black text-white border border-white/40 transition"
+            >
+              {refreshing ? 'Refreshing...' : 'Refresh metrics'}
+            </button>
+
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight">
               <p className="font-semibold text-slate-100 truncate md:col-span-2">
                 Top traded item:{' '}
@@ -271,16 +282,6 @@ export default function ListingsBrowser() {
                   <span className="text-xs font-semibold text-slate-300">No seller ranking available yet.</span>
                 )}
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  void fetchListings(true)
-                }}
-                disabled={refreshing}
-                className="md:justify-self-end inline-flex items-center rounded-full bg-black/20 hover:bg-black/30 disabled:opacity-60 px-2.5 py-0.5 text-[10px] font-black text-white border border-white/40 transition"
-              >
-                {refreshing ? 'Refreshing...' : 'Refresh metrics'}
-              </button>
             </div>
           </div>
         </div>
