@@ -2,82 +2,134 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signIn } from '@/lib/auth'
-import { useLanguage } from '@/components/LanguageProvider'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
+
   const router = useRouter()
-  const { language } = useLanguage()
-  const isEs = language === 'es'
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] =
+    useState('')
 
-  async function handleLogin() {
+  const [password, setPassword] =
+    useState('')
+
+  const [loading, setLoading] =
+    useState(false)
+
+  async function handleLogin(
+    e: React.FormEvent
+  ) {
+
+    e.preventDefault()
+
     setLoading(true)
 
-    const { error } = await signIn(email, password)
-
-    setLoading(false)
+    const { error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
     if (error) {
+
       alert(error.message)
+
+      setLoading(false)
+
       return
     }
 
     router.push('/dashboard')
+
+    router.refresh()
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 px-6">
 
-      <div className="w-full max-w-md bg-white p-10 rounded-[40px] shadow-xl border">
+    <main className="min-h-screen bg-slate-100 flex items-center justify-center px-6">
 
-        <h1 className="text-5xl font-black mb-3">
-          {isEs ? 'Bienvenido de nuevo' : 'Welcome Back'}
+      <div className="bg-white w-full max-w-md rounded-[30px] shadow-xl p-10 border">
+
+        <h1 className="text-4xl font-black mb-3">
+          Welcome Back
         </h1>
 
-        <p className="text-slate-500 mb-8 text-lg">
-          {isEs
-            ? 'Inicia sesi\u00f3n para seguir usando Troka.'
-            : 'Login to continue using Troka.'}
+        <p className="text-slate-500 mb-8">
+          Sign in to continue using TROKA.
         </p>
 
-        <div className="space-y-5">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-5"
+        >
 
-          <input
-            type="email"
-            placeholder={isEs ? 'Correo' : 'Email'}
-            className="w-full border rounded-2xl px-5 py-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div>
 
-          <input
-            type="password"
-            placeholder={isEs ? 'Contrase\u00f1a' : 'Password'}
-            className="w-full border rounded-2xl px-5 py-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <label className="block mb-2 font-semibold">
+              Email
+            </label>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              className="w-full border rounded-2xl px-5 py-4 text-black"
+              required
+            />
+
+          </div>
+
+          <div>
+
+            <label className="block mb-2 font-semibold">
+              Password
+            </label>
+
+            <input
+              type="password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              className="w-full border rounded-2xl px-5 py-4 text-black"
+              required
+            />
+
+          </div>
 
           <button
-            onClick={handleLogin}
+            type="submit"
             disabled={loading}
-            className="w-full bg-green-500 text-white py-4 rounded-2xl font-black text-lg"
+            className="w-full bg-green-500 hover:bg-green-600 transition text-white py-4 rounded-2xl font-black text-lg"
           >
+
             {loading
-              ? isEs
-                ? 'Iniciando sesi\u00f3n...'
-                : 'Logging in...'
-              : isEs
-              ? 'Entrar'
+              ? 'Signing In...'
               : 'Login'}
+
           </button>
 
-        </div>
+        </form>
+
+        <p className="text-center text-slate-500 mt-8">
+
+          Don&apos;t have an account?{' '}
+
+          <Link
+            href="/register"
+            className="text-green-600 font-bold"
+          >
+            Register
+          </Link>
+
+        </p>
+
       </div>
+
     </main>
   )
 }
