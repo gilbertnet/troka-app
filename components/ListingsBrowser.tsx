@@ -247,12 +247,9 @@ export default function ListingsBrowser() {
           </div>
 
           <div className="w-full h-[104px] md:h-[96px] bg-gradient-to-r from-emerald-700 to-teal-600 text-white border-2 border-emerald-900 rounded-2xl px-4 py-2 shadow-md overflow-hidden">
-            <p className="text-[11px] font-black uppercase text-emerald-100 mb-2">Nuevo Panel De Metricas</p>
+            <p className="text-[11px] font-black uppercase text-emerald-100 mb-2">Marketplace Snapshot</p>
 
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-[11px] md:text-xs leading-tight">
-              <p className="hidden md:inline-block text-[9px] uppercase font-black tracking-wide bg-black/20 px-2 py-0.5 rounded-md w-max">
-                Visible junto al titulo Marketplace
-              </p>
               <p className="font-semibold text-slate-100 truncate md:col-span-2">
                 Top traded item:{' '}
                 <span className="font-black text-white">
